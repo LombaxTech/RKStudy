@@ -52,7 +52,7 @@ export default function Navbar() {
   return (
     <div className="p-4 flex items-center justify-between shadow-md">
       <h1 className="font-bold italic">
-        <Link href={"/"}>Logo</Link>
+        <Link href={"/"}>RKQuizGen</Link>
       </h1>
       <ul className="flex gap-4">
         {!user && <GoogleButton onClick={signinWithGoogle} />}

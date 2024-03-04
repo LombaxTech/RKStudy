@@ -10,7 +10,7 @@ import React, { useContext, useRef, useState } from "react";
 export default function SetupAccount() {
   const { user, setUser } = useContext(AuthContext);
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(user?.displayName || "");
   const [file, setFile] = useState<any>(null);
   const fileInputRef = useRef<any>(null);
 
