@@ -14,7 +14,12 @@ export default function App() {
   const router = useRouter();
 
   if (!userLoading && user?.setup === false) return <SetupAccount />;
-  if (!userLoading && user) return <Home />;
+
+  if (!userLoading && user.type === "superadmin")
+    router.push(`/superadmin/home`);
+  if (!userLoading && user.type === "teacher") router.push(`/school/home`);
+
+  if (!userLoading && user.type === "student") return <Home />;
 
   return <div className="">{!user && <div>No user found</div>}</div>;
 }
