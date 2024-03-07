@@ -89,6 +89,20 @@ export default function SuperAdminSchool() {
               Add admin
             </button>
           </div>
+
+          <h1 className="font-bold">Students: </h1>
+          {school.students &&
+            school.students.map((student: any) => {
+              return (
+                <div
+                  className="flex items-center gap-4 p-2 border"
+                  key={student.id}
+                >
+                  <span className="">{student.email}</span>
+                  <span className="">{student.name}</span>
+                </div>
+              );
+            })}
         </div>
       </div>
     );
