@@ -33,6 +33,7 @@ export default function SetupAccount() {
       name,
       email: user.email,
       createdAt: new Date(),
+      type: "student",
       // profilePictureUrl: imageUrl,
     };
 
