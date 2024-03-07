@@ -32,6 +32,7 @@ export default function SetupAccount() {
     const firestoreUser = {
       name,
       email: user.email,
+      createdAt: new Date(),
       // profilePictureUrl: imageUrl,
     };
 
