@@ -16,7 +16,8 @@
     "openai": "^4.28.4",
     "react": "^18",
     "react-dom": "^18",
-    "stripe": "^14.19.0"
+    "stripe": "^14.19.0",
+    "tesseract.js": "^5.0.5"
   },
   "devDependencies": {
     "@types/node": "^20",
