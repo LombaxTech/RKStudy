@@ -6,7 +6,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
 import SetupAccount from "@/components/SetupAccount";
-import Home from "@/components/Home";
+import StudentHome from "@/components/StudentHome";
 
 export default function App() {
   const { user, userLoading } = useContext(AuthContext);
@@ -19,7 +19,7 @@ export default function App() {
     router.push(`/superadmin/home`);
   if (!userLoading && user?.type === "teacher") router.push(`/school/home`);
 
-  if (!userLoading && user?.type === "student") return <Home />;
+  if (!userLoading && user?.type === "student") return <StudentHome />;
 
   return <div className="">{!user && <div>No user found</div>}</div>;
 }
