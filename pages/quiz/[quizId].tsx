@@ -17,20 +17,58 @@ export default function Quiz() {
 
   const [quiz, setQuiz] = useState<any>(null);
 
+  const [quizState, setQuizState] = useState<any>([]);
+
+  const [submittedQuiz, setSubmittedQuiz] = useState(false);
+
   useEffect(() => {
     const fetchQuiz = async () => {
       let quizDoc = await getDoc(doc(db, "quizzes", quizId as string));
       setQuiz({ id: quizDoc.id, ...quizDoc.data() });
+
+      setQuizState(
+        quizDoc.data()?.questions.map((question: any) => ({
+          questionText: question.questionText,
+          correctAnswer: question.correctAnswer,
+          selectedAnswer: null,
+        }))
+      );
     };
 
     if (quizId) fetchQuiz();
   }, [quizId]);
+
+  const logStuff = () => {
+    console.log(quizState);
+    console.log(quiz);
+  };
+
+  const checkAnswers = () => {
+    setSubmittedQuiz(true);
+  };
+
+  const resetQuiz = () => {
+    setSubmittedQuiz(false);
+
+    if (quiz) {
+      setQuizState(
+        quiz.questions.map((question: any) => ({
+          questionText: question.questionText,
+          correctAnswer: question.correctAnswer,
+          selectedAnswer: null,
+        }))
+      );
+    }
+  };
 
   if (!quiz) return <h1 className="">Loading quiz...</h1>;
 
   if (user && quizId && quiz)
     return (
       <div className="p-10 flex justify-center">
+        <button className="btn" onClick={logStuff}>
+          Log stuff
+        </button>
         <div className="flex flex-col gap-4">
           {/* QUIZ INFO */}
           <h1 className="text-xl font-bold">{quiz.title}</h1>
@@ -43,12 +81,89 @@ export default function Quiz() {
           {/* QUESTIONS */}
           <h1 className="font-bold text-lg">Questions</h1>
           {quiz.questions.map((question: QuizQuestion, i: any) => {
+            const currentQuestionState = quizState.find(
+              (q: any) => q.questionText === question.questionText
+            );
+
+            const { selectedAnswer } = currentQuestionState;
+
             return (
               <div className="">
-                <span>{question.questionText}</span>
+                <span className="font-medium">
+                  {i + 1}. {question.questionText}
+                </span>
+
+                <div className="flex flex-col gap-2 my-4">
+                  {question.options.map((option, i: any) => {
+                    const isOptionSelected = selectedAnswer === option;
+                    const isSelectedOptionWrong =
+                      selectedAnswer !== question.correctAnswer;
+
+                    return (
+                      <div className="flex items-center gap-4">
+                        <input
+                          disabled={submittedQuiz}
+                          type="radio"
+                          checked={isOptionSelected}
+                          name={question.questionText}
+                          value={option}
+                          className={`radio ${
+                            submittedQuiz &&
+                            isSelectedOptionWrong &&
+                            isOptionSelected
+                              ? "radio-error"
+                              : ""
+                          }`}
+                          onChange={(e) =>
+                            setQuizState(
+                              quizState.map((q: any) => {
+                                if (q.questionText === question.questionText) {
+                                  return {
+                                    ...q,
+                                    selectedAnswer: e.target.value,
+                                  };
+                                } else return q;
+                              })
+                            )
+                          }
+                        />
+                        <span className="">{option}</span>
+                        {submittedQuiz && question.correctAnswer === option && (
+                          <span className={`text-sm text-green-500 font-bold`}>
+                            Correct
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                {submittedQuiz && !selectedAnswer && (
+                  <h1 className="text-red-500">No answer submitted</h1>
+                )}
               </div>
             );
           })}
+
+          {/* RESULTS */}
+          {submittedQuiz && (
+            <div className="flex flex-col gap-2">
+              <h1 className="">
+                Score:{" "}
+                {
+                  quizState.filter(
+                    (q: any) => q.correctAnswer === q.selectedAnswer
+                  ).length
+                }
+                /{quiz.questions.length}
+              </h1>
+            </div>
+          )}
+          <button className="btn" onClick={checkAnswers}>
+            Check Answers
+          </button>
+          <button className="btn" onClick={resetQuiz}>
+            Reset
+          </button>
         </div>
       </div>
     );
