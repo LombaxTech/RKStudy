@@ -35,7 +35,9 @@ export default function NotSignedInScreen() {
 
   return (
     <div
-      className="flex flex-col min-h-screen items-center justify-center gap-6 text-white"
+      className={`flex flex-col min-h-screen items-center justify-center gap-6  ${
+        vantaEffect ? "text-white" : ""
+      }`}
       ref={vantaRef}
     >
       <h1 className="text-6xl font-bold">RKQuizzer</h1>
