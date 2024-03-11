@@ -8,11 +8,18 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  increment,
   query,
   updateDoc,
 } from "firebase/firestore";
 import Link from "next/link";
-import React, { useContext, useEffect, useState, Fragment } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  Fragment,
+  useRef,
+} from "react";
 
 import { FaFile } from "react-icons/fa";
 
@@ -20,6 +27,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import NotJoinedSchool from "./NotJoinedSchool";
 import axios from "axios";
 import { createWorker } from "tesseract.js";
+import { getMonthAndYearAsString } from "@/helperFunctions";
+
+const monthlyLimit = 15;
 
 export default function StudentHome() {
   const { user } = useContext(AuthContext);
@@ -32,8 +42,10 @@ export default function StudentHome() {
     "All" | "My Quizzes"
   >("All");
 
+  const [usageThisMonth, setUsageThisMonth] = useState<number>(0);
+
   useEffect(() => {
-    const initQuizzes = async () => {
+    const initQuizzesAndUsage = async () => {
       let quizzesSnapshot = await getDocs(collection(db, "quizzes"));
 
       let quizzes: any = [];
@@ -43,9 +55,16 @@ export default function StudentHome() {
       );
 
       setQuizzes(quizzes);
+
+      if (!user.usage) setUsageThisMonth(0);
+      if (user.usage) {
+        const monthYear = getMonthAndYearAsString();
+        let usageThisMonth = user.usage[monthYear] || 0;
+        setUsageThisMonth(usageThisMonth);
+      }
     };
 
-    if (user) initQuizzes();
+    if (user) initQuizzesAndUsage();
   }, [user]);
 
   const deleteQuiz = async (quiz: any) => {
@@ -59,25 +78,88 @@ export default function StudentHome() {
     }
   };
 
+  const logStuff = () => {
+    console.log(user);
+    let monthYear = getMonthAndYearAsString();
+    console.log(`month year: ${monthYear}`);
+    if (!user.usage) {
+      console.log("user usage is no!");
+    } else {
+      console.log(user.usage[monthYear]);
+    }
+  };
+
+  const genQuizNum = async () => {
+    try {
+      let monthYear = getMonthAndYearAsString();
+
+      await updateDoc(doc(db, "users", user.uid), {
+        [`usage.${monthYear}`]: increment(1),
+      });
+
+      console.log("gen quiz and incremented");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   // IF NOT JOINED TO A SCHOOL
   if (user && !user.schoolId) return <NotJoinedSchool />;
 
   if (user)
     return (
       <>
-        <div className="flex-1 flex gap-4 px-8 pt-12">
-          {/* TITLE + FILTER */}
+        <div className="flex-1 flex flex-col lg:flex-row gap-4 px-8 pt-12">
+          {/* USER PROFILE + FILTER */}
 
-          <div className="flex flex-col gap-4 w-3/12">
-            {/* TITLE */}
-            <div className="p-8 bg-white rounded-md shadow flex flex-col gap-8">
-              <h1 className="text-2xl font-bold">Welcome back {user.name}</h1>
+          <div className="flex flex-col gap-4 lg:w-3/12 w-full">
+            {/* USER PROFILE */}
+            <div className="p-8 bg-white rounded-md shadow flex flex-col gap-6">
+              <h1 className="text-2xl font-bold text-center">
+                Welcome back {user.name}
+              </h1>
+              {/* # OF GENERATIONS LEFT */}
+              <div className="flex flex-col">
+                <h1 className="text-center">
+                  <span className="text-2xl font-medium">
+                    {" "}
+                    {usageThisMonth}{" "}
+                  </span>
+                  of
+                  <span className="text-2xl font-medium"> {monthlyLimit} </span>
+                </h1>
+                <span className="text-center">
+                  generations used this month.
+                </span>
+              </div>
+              {/* <div className="flex gap-2">
+                <button className="btn btn-sm" onClick={logStuff}>
+                  Log
+                </button>
+                <button
+                  className="btn btn-sm btn-secondary"
+                  onClick={genQuizNum}
+                >
+                  gen quiz
+                </button>
+              </div> */}
               <button
+                disabled={usageThisMonth >= monthlyLimit}
                 className="btn btn-primary"
                 onClick={() => setCreateQuizModalIsOpen(true)}
               >
                 Create New Quiz
               </button>
+              {usageThisMonth >= monthlyLimit ? (
+                <div className="text-center flex flex-col gap-2">
+                  <h1 className="">
+                    You have used up your generations for this month
+                  </h1>
+                  <span className="text-sm">
+                    Upgrade your plan for more generations
+                  </span>
+                </div>
+              ) : null}
             </div>
 
             {/* TITLE */}
@@ -94,35 +176,11 @@ export default function StudentHome() {
                 <option>All</option>
                 <option>My Quizzes</option>
               </select>
-
-              {/* SUBJECT OF QUIZZES */}
-
-              {/* <div className="flex items-center justify-between mb-10">
-            <div className="flex items-center gap-8">
-              <h1 className="text-2xl font-bold">
-                {typeOfQuizzesToShow === "All" && "All Quizzes"}
-                {typeOfQuizzesToShow === "My Quizzes" && "My Quizzes"}
-              </h1>
-
-            </div>
-            <button
-              className="btn"
-              onClick={() => setCreateQuizModalIsOpen(true)}
-            >
-              Create Quiz
-            </button>
-          </div> */}
             </div>
           </div>
 
           {/* QUIZZES */}
-          <div className="flex flex-col gap-2 w-9/12">
-            {/* <div className="flex items-center justify-between">
-              <h1 className="text-2xl font-bold">Quizzes</h1>
-              <button className="btn btn-secondary btn-sm">
-                Generate Quiz
-              </button>
-            </div> */}
+          <div className="flex flex-col gap-2 lg:w-9/12 w-full">
             <div className="flex flex-col gap-2">
               {quizzes &&
                 quizzes.map((quiz: any, i: any) => {
@@ -134,12 +192,12 @@ export default function StudentHome() {
                   if (!isMyQuiz && !quiz.public) return null;
 
                   return (
-                    <div className="p-2 border-2 shadow-sm rounded-md bg-white">
-                      <h1 className="">{quiz.title}</h1>
+                    <div className="p-2 px-4 border-2 shadow-sm rounded-md bg-white flex items-center justify-between">
+                      <h1 className="w-4/12 font-bold">{quiz.title}</h1>
                       <span className="">Made by: {quiz.createdBy.name}</span>
                       <div className="flex items-center gap-2">
                         <Link href={`/quiz/${quiz.id}`}>
-                          <button className="btn">Take Quiz</button>
+                          <button className="btn btn-primary">Take Quiz</button>
                         </Link>
                         {isMyQuiz && (
                           <button
@@ -197,7 +255,17 @@ function CreateQuizModal({
 
   const [file, setFile] = useState<any>(null);
 
+  const fileInputRef = useRef<any>(null);
+
   const handleFileChange = (e: any) => {
+    let file = e.target.files[0];
+
+    setError("");
+    if (file?.type === "application/pdf")
+      return setError("PDFs are not yet supported.");
+    if (!file?.type.startsWith("image/"))
+      return setError("Please choose an image");
+
     setFile(e.target.files[0]);
   };
 
@@ -207,6 +275,8 @@ function CreateQuizModal({
     setCreatingQuiz(true);
 
     try {
+      // todo: check how many quizzes student has generated this month
+
       console.log("creating quiz");
 
       if (!file) return console.log("You need to add a file");
@@ -231,7 +301,7 @@ function CreateQuizModal({
         await worker.terminate();
 
         // SEND THE TEXT OVER TO OPENAI AND GET A QUIZ BACK
-        res = await axios.post(`http://localhost:3000/api/test`, {
+        res = await axios.post(`/api/test`, {
           //  textContent: `Generate a quiz of 5 questions with 3 options using the following content as the revision material: ${textContent}`,
           textContent: `Generate a quiz of 5 questions using the following content as the revision material: ${textContent}`,
         });
@@ -316,6 +386,10 @@ function CreateQuizModal({
                   <div className="flex flex-col items-center gap-2">
                     <span className="loading loading-spinner loading-lg"></span>
                     <h1 className="">Creating Quiz. Please wait a moment</h1>
+                    <h1 className="text-sm">
+                      This can take a few minutes depending on the amount and
+                      size of files
+                    </h1>
                   </div>
                 </Dialog.Panel>
               ) : (
@@ -328,25 +402,32 @@ function CreateQuizModal({
                   </Dialog.Title>
 
                   {/* CREATE QUIZ */}
-                  <div className="flex flex-col gap-2 mt-4">
-                    <input
-                      type="text"
-                      placeholder="Enter quiz title"
-                      className="p-1 outline-none border"
-                      value={quizTitle}
-                      onChange={(e) => setQuizTitle(e.target.value)}
-                    />
-                    <textarea
-                      placeholder="What is the quiz about?"
-                      className="p-2 outline-none border"
-                      value={quizAbout}
-                      onChange={(e) => setQuizAbout(e.target.value)}
-                    />
+                  <div className="flex flex-col gap-6 mt-4">
+                    <div className="flex flex-col gap-2">
+                      <label className="">Title</label>
+                      <input
+                        type="text"
+                        placeholder="Enter quiz title"
+                        className="p-1 outline-none border"
+                        value={quizTitle}
+                        onChange={(e) => setQuizTitle(e.target.value)}
+                      />
+                    </div>
+                    <div className="flex flex-col gap-2">
+                      <label className="">About</label>
+
+                      <textarea
+                        placeholder="What is the quiz about?"
+                        className="p-2 outline-none border"
+                        value={quizAbout}
+                        onChange={(e) => setQuizAbout(e.target.value)}
+                      />
+                    </div>
 
                     <div className="flex items-center gap-3">
                       <label className="w-8/12">Make quiz private? </label>
                       <select
-                        className="select w-full max-w-xs border"
+                        className="p-2 w-full max-w-xs border"
                         value={isQuizPrivate}
                         // @ts-ignore
                         onChange={(e) => setIsQuizPrivate(e.target.value)}
@@ -357,29 +438,52 @@ function CreateQuizModal({
                     </div>
 
                     {/* UPLOAD FILES TO GENERATE QUIZ FROM */}
-                    <div className="flex flex-col gap-2 my-4">
-                      <label className="">
+                    <div className="flex flex-col gap-2 mt-2">
+                      {/* <label className="">
                         Upload files to generate quiz from
-                      </label>
-                      <input type="file" onChange={handleFileChange} />
+                      </label> */}
+                      <input
+                        type="file"
+                        onChange={handleFileChange}
+                        ref={fileInputRef}
+                        style={{ display: "none" }}
+                      />
+                      <button
+                        disabled={file}
+                        className="btn btn-sm"
+                        onClick={() => {
+                          // @ts-ignore
+                          fileInputRef?.current?.click();
+                        }}
+                      >
+                        Choose image to generate quiz from
+                      </button>
 
                       {file && (
-                        <div className="flex flex-col justify-center items-center mt-4">
-                          <span className="">
-                            <FaFile size={30} />
-                          </span>
-                          <span className="">{file.name}</span>
-                          <button className="btn" onClick={() => setFile(null)}>
+                        <div className="flex justify-center items-center gap-2 mt-4">
+                          <div className="flex flex-col items-center">
+                            <span className="">
+                              <FaFile size={30} />
+                            </span>
+                            <span className="">{file.name}</span>
+                          </div>
+                          <button
+                            className="btn btn-sm"
+                            onClick={() => setFile(null)}
+                          >
                             Remove
                           </button>
                         </div>
                       )}
                     </div>
 
-                    <button
-                      className="btn btn-sm btn-primary"
-                      onClick={createQuiz}
-                    >
+                    {error && (
+                      <div className="p-2 bg-red-200 text-red-500 text-center">
+                        {error}
+                      </div>
+                    )}
+
+                    <button className="btn btn-primary" onClick={createQuiz}>
                       Create Quiz
                     </button>
                   </div>
