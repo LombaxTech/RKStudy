@@ -96,7 +96,10 @@ export default function SuperAdminSchool() {
                   if (invite.type !== "student") return null;
 
                   return (
-                    <h1 className="text-xl font-medium p-4 border-2 w-fit">
+                    <h1
+                      className="text-xl font-medium p-4 border-2 w-fit"
+                      key={invite.id}
+                    >
                       {invite.code}
                     </h1>
                   );
@@ -114,7 +117,10 @@ export default function SuperAdminSchool() {
                   if (invite.type !== "teacher") return null;
 
                   return (
-                    <h1 className="text-xl font-medium p-4 border-2 w-fit">
+                    <h1
+                      className="text-xl font-medium p-4 border-2 w-fit"
+                      key={invite.id}
+                    >
                       {invite.code}
                     </h1>
                   );

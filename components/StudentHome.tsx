@@ -192,7 +192,10 @@ export default function StudentHome() {
                   if (!isMyQuiz && !quiz.public) return null;
 
                   return (
-                    <div className="p-2 px-4 border-2 shadow-sm rounded-md bg-white flex items-center justify-between">
+                    <div
+                      className="p-2 px-4 border-2 shadow-sm rounded-md bg-white flex items-center justify-between"
+                      key={i}
+                    >
                       <h1 className="w-4/12 font-bold">{quiz.title}</h1>
                       <span className="">Made by: {quiz.createdBy.name}</span>
                       <div className="flex items-center gap-2">

@@ -93,7 +93,7 @@ export default function Quiz() {
             const { selectedAnswer } = currentQuestionState;
 
             return (
-              <div className="">
+              <div className="" key={i}>
                 <span className="font-medium">
                   {i + 1}. {question.questionText}
                 </span>
@@ -105,7 +105,7 @@ export default function Quiz() {
                       selectedAnswer !== question.correctAnswer;
 
                     return (
-                      <div className="flex items-center gap-4">
+                      <div className="flex items-center gap-4" key={i}>
                         <input
                           disabled={submittedQuiz}
                           type="radio"
