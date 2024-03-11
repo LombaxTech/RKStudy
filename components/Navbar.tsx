@@ -53,13 +53,52 @@ export default function Navbar() {
     <div className="p-4 flex items-center justify-between shadow-md">
       <h1 className="font-bold italic">
         <Link href={"/"}>RKQuizGen</Link>
+
+        {/* {user && <h1 className="">Type: {user.type}</h1>} */}
       </h1>
       <ul className="flex gap-4">
-        {!user && <GoogleButton onClick={signinWithGoogle} />}
-        {user && (
+        {/* {!user && <GoogleButton onClick={signinWithGoogle} />} */}
+        {!user && (
+          <Link href={"signin"}>
+            <button className="btn btn-primary btn-sm">Login</button>
+          </Link>
+        )}
+
+        {user && user?.setup === false && (
           <li className="cursor-pointer" onClick={signout}>
             Sign Out
           </li>
+        )}
+
+        {user && !(user?.setup === false) && (
+          <>
+            {/* <Link href={`/my-profile`}>Profile</Link>
+            <li className="cursor-pointer" onClick={signout}>
+              Sign Out
+            </li> */}
+
+            <div className="dropdown dropdown-end">
+              <div
+                tabIndex={0}
+                role="button"
+                className="w-10 h-10 rounded-full flex justify-center items-center bg-primary text-white"
+              >
+                <span className="">{user.name[0]}</span>
+              </div>
+
+              <ul
+                tabIndex={0}
+                className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <Link href={`/my-profile`}>Profile</Link>
+                </li>
+                <li onClick={signout}>
+                  <span>Sign Out</span>
+                </li>
+              </ul>
+            </div>
+          </>
         )}
       </ul>
     </div>
