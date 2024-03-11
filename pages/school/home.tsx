@@ -14,7 +14,7 @@ export default function SchoolHome() {
 
   const [school, setSchool] = useState<any>(null);
 
-  const [invite, setInvite] = useState<any>(null);
+  const [invites, setInvites] = useState<any>([]);
 
   const [quizzes, setQuizzes] = useState<any>([]);
 
@@ -28,12 +28,12 @@ export default function SchoolHome() {
 
         let invitesSnapshot = await getDocs(collection(db, "invites"));
 
-        let invite: any = null;
+        let invites: any = [];
         invitesSnapshot.forEach((inviteDoc) => {
           if (inviteDoc.data().school.id === schoolDoc.id)
-            invite = { id: inviteDoc.id, ...inviteDoc.data() };
+            invites.push({ id: inviteDoc.id, ...inviteDoc.data() });
         });
-        if (invite) setInvite(invite);
+        setInvites(invites);
 
         let quizzes: any = [];
         let quizzesSnapshot = await getDocs(collection(db, "quizzes"));
@@ -76,6 +76,9 @@ export default function SchoolHome() {
                     );
                   })}
               </div>
+              {school.students.length === 0 ? (
+                <h1 className="font-medium">No students have signed up yet</h1>
+              ) : null}
             </div>
 
             {/* QUIZZES */}
@@ -84,9 +87,9 @@ export default function SchoolHome() {
               {quizzes && (
                 <div className="">
                   <h1 className="">{quizzes.length} Quizzes Created</h1>
-                  <button className="btn" onClick={() => console.log(quizzes)}>
+                  {/* <button className="btn" onClick={() => console.log(quizzes)}>
                     Quizzes
-                  </button>
+                  </button> */}
                 </div>
               )}
             </div>
@@ -94,21 +97,48 @@ export default function SchoolHome() {
 
           <div className="flex-1 flex flex-col gap-4">
             {/* INVITATION CODE */}
-            <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-2">
-              <h1 className="text-xl font-bold">Invitation Code</h1>
-              {invite && (
-                <h1 className="text-3xl font-medium p-4 border-2 w-fit">
-                  {invite.code}
-                </h1>
-              )}
-              <h4 className="text-sm font-light">
-                Send this code to your students to let them join
-              </h4>
+            <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-4">
+              <h1 className="text-xl font-bold">Invitation Codes</h1>
+
+              <div className="flex flex-col gap-2">
+                <h1 className="text-lg font-medium">Student</h1>
+                {invites &&
+                  invites.map((invite: any) => {
+                    if (invite.type !== "student") return null;
+
+                    return (
+                      <h1 className="text-xl font-medium p-4 border-2 w-fit">
+                        {invite.code}
+                      </h1>
+                    );
+                  })}
+                <h4 className="text-sm font-light">
+                  Send this code to your students to let them join
+                </h4>
+              </div>
+              {/* TEACHER INVITE CODE */}
+
+              <div className="flex flex-col gap-2">
+                <h1 className="text-lg font-medium">Teacher</h1>
+                {invites &&
+                  invites.map((invite: any) => {
+                    if (invite.type !== "teacher") return null;
+
+                    return (
+                      <h1 className="text-xl font-medium p-4 border-2 w-fit">
+                        {invite.code}
+                      </h1>
+                    );
+                  })}
+                <h4 className="text-sm font-light">
+                  Send this code to other staff to join as admins
+                </h4>
+              </div>
             </div>
 
             {/* QUIZZES GENERATED */}
             <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-2">
-              <h1 className="text-xl font-bold">Licenses</h1>
+              <h1 className="text-xl font-bold">Student Licenses</h1>
               <h1 className="text-2xl font-medium p-4 border-2 w-fit">
                 {school.students.length} used out of {school.licenseLimit}
               </h1>
