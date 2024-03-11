@@ -26,6 +26,16 @@ export function getMonthAndYearAsString() {
   return `${month}-${year}`;
 }
 
+export function formatDate(date: any) {
+  // Get the day, month, and year from the date object
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0"); // Months are zero based, so we add 1
+  const year = date.getFullYear();
+
+  // Concatenate the day, month, and year with dashes
+  return `${day}-${month}-${year}`;
+}
+
 // * BASE 64 FUNCTIONS
 
 export async function toBase64(file: any) {

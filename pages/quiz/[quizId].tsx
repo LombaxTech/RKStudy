@@ -1,5 +1,6 @@
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
+import { formatDate } from "@/helperFunctions";
 import { doc, getDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
@@ -66,17 +67,21 @@ export default function Quiz() {
   if (user && quizId && quiz)
     return (
       <div className="p-10 flex justify-center">
-        <button className="btn" onClick={logStuff}>
+        {/* <button className="btn" onClick={logStuff}>
           Log stuff
-        </button>
+        </button> */}
         <div className="flex flex-col gap-4">
           {/* QUIZ INFO */}
-          <h1 className="text-xl font-bold">{quiz.title}</h1>
-          <p className="">{quiz.about}</p>
-          <div className="flex items-center gap-4">
-            <p className="">Created on: xx/xx/xxxx</p>
-            <p className="">Created by: {quiz.createdBy.name}</p>
-            <p className="">Is public? {quiz.public ? "yes" : "no"}</p>
+          <div className="flex flex-col gap-2 bg-white p-4 rounded-md shadow-md">
+            <h1 className="text-xl font-bold">{quiz.title}</h1>
+            <p className="">{quiz.about}</p>
+            <div className="flex items-center gap-4">
+              <p className="">
+                Created on: {formatDate(quiz.createdAt.toDate())}
+              </p>
+              <p className="">Created by: {quiz.createdBy.name}</p>
+              {/* <p className="">Is public? {quiz.public ? "yes" : "no"}</p> */}
+            </div>
           </div>
           {/* QUESTIONS */}
           <h1 className="font-bold text-lg">Questions</h1>
@@ -158,7 +163,7 @@ export default function Quiz() {
               </h1>
             </div>
           )}
-          <button className="btn" onClick={checkAnswers}>
+          <button className="btn btn-primary" onClick={checkAnswers}>
             Check Answers
           </button>
           <button className="btn" onClick={resetQuiz}>
