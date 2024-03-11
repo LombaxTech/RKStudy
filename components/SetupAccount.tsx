@@ -72,7 +72,11 @@ export default function SetupAccount() {
         )}
       </div> */}
 
-      <button className="btn btn-primary" onClick={finishProfileSetup}>
+      <button
+        disabled={!name || name.length < 2}
+        className="btn btn-primary"
+        onClick={finishProfileSetup}
+      >
         Finish Profile Set Up
       </button>
     </div>

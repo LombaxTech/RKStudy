@@ -78,7 +78,7 @@ export default function JoinInviteTeacher() {
 
   return (
     <>
-      <div className="p-10 flex flex-col gap-4">
+      <div className="p-10 flex flex-col items-center gap-4">
         <div className="flex flex-col gap-4 w-5/12">
           <h1 className="text-2xl font-bold">Join a school as a teacher</h1>
           <input
@@ -88,7 +88,11 @@ export default function JoinInviteTeacher() {
             onChange={(e) => setInviteCode(e.target.value)}
             placeholder="Enter invitation code"
           />
-          <button className="btn btn-primary" onClick={joinSchool}>
+          <button
+            className="btn btn-primary"
+            onClick={joinSchool}
+            disabled={!inviteCode}
+          >
             Join School
           </button>
           {error && (

@@ -491,7 +491,11 @@ function CreateQuizModal({
                       </div>
                     )}
 
-                    <button className="btn btn-primary" onClick={createQuiz}>
+                    <button
+                      className="btn btn-primary"
+                      onClick={createQuiz}
+                      disabled={!file || !quizTitle}
+                    >
                       Create Quiz
                     </button>
                   </div>
