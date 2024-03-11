@@ -1,5 +1,4 @@
 import { AuthContext } from "@/context/AuthContext";
-import { historyQuiz } from "@/data";
 import { db } from "@/firebase";
 import {
   addDoc,
