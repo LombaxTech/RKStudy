@@ -9,6 +9,7 @@ import {
 } from "firebase/firestore";
 import React, { useContext, useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import Link from "next/link";
 
 export default function NotJoinedSchool() {
   const { user } = useContext(AuthContext);
@@ -37,7 +38,7 @@ export default function NotJoinedSchool() {
 
       console.log(invite);
 
-      if (!invite) {
+      if (!invite || !(invite.type === "student")) {
         console.log("invite does not exist");
         return setError("Invalid invitation code");
       }
@@ -81,7 +82,7 @@ export default function NotJoinedSchool() {
             onChange={(e) => setInviteCode(e.target.value)}
             placeholder="Enter invitation code"
           />
-          <button className="btn" onClick={joinSchool}>
+          <button className="btn btn-primary" onClick={joinSchool}>
             Join School
           </button>
           {error && (
@@ -89,6 +90,10 @@ export default function NotJoinedSchool() {
               {error}
             </div>
           )}
+
+          <Link href={"/join-invite-teacher"} className="underline text-lg">
+            Joining as a teacher?
+          </Link>
         </div>
         {/* <h1
           className="underline cursor-pointer"
