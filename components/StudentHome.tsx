@@ -338,6 +338,12 @@ function CreateQuizModal({
           { id: newQuizDoc.id, ...newQuiz },
         ]);
 
+        // INCREMENT USAGE
+        const monthYear = getMonthAndYearAsString();
+        await updateDoc(doc(db, "users", user.uid), {
+          [`usage.${monthYear}`]: increment(1),
+        });
+
         setQuizTitle("");
         setQuizAbout("");
         setSuccess(true);
