@@ -1,6 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
 
 type Student = {
@@ -85,8 +86,30 @@ export default function SchoolHome() {
             <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-4">
               <h1 className="text-xl font-bold">Generated Quizzes</h1>
               {quizzes && (
-                <div className="">
+                <div className="flex flex-col gap-4">
                   <h1 className="">{quizzes.length} Quizzes Created</h1>
+
+                  <div className="flex flex-col gap-1">
+                    {quizzes.map((quiz: any, i: any) => {
+                      return (
+                        <div
+                          className="p-2 px-4 border-2 shadow-sm rounded-md bg-white flex items-center justify-between"
+                          key={i}
+                        >
+                          <h1 className="w-4/12 font-bold">{quiz.title}</h1>
+                          <span className="">
+                            Made by: {quiz.createdBy.name}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            <Link href={`/quiz/view/${quiz.id}`}>
+                              <button className="btn btn-primary">View</button>
+                            </Link>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
                   {/* <button className="btn" onClick={() => console.log(quizzes)}>
                     Quizzes
                   </button> */}
@@ -142,7 +165,7 @@ export default function SchoolHome() {
               </div>
             </div>
 
-            {/* QUIZZES GENERATED */}
+            {/* STUDENT LICENSES */}
             <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-2">
               <h1 className="text-xl font-bold">Student Licenses</h1>
               <h1 className="text-2xl font-medium p-4 border-2 w-fit">
