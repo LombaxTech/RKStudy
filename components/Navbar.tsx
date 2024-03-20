@@ -56,7 +56,7 @@ export default function Navbar() {
 
         {/* {user && <h1 className="">Type: {user.type}</h1>} */}
       </h1>
-      <ul className="flex gap-4">
+      <ul className="flex items-center gap-4">
         {/* {!user && <GoogleButton onClick={signinWithGoogle} />} */}
         {!user && (
           <Link href={"signin"}>
@@ -74,9 +74,12 @@ export default function Navbar() {
           <>
             {/* <Link href={`/my-profile`}>Profile</Link>
             <li className="cursor-pointer" onClick={signout}>
-              Sign Out
-            </li> */}
+            Sign Out
+          </li> */}
 
+            <Link href={`/roadmap`} className="font-medium">
+              Future Features
+            </Link>
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
