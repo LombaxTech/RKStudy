@@ -54,9 +54,10 @@ export default function StudentHome() {
 
       let quizzes: any = [];
 
-      quizzesSnapshot.forEach((quizDoc) =>
-        quizzes.push({ id: quizDoc.id, ...quizDoc.data() })
-      );
+      quizzesSnapshot.forEach((quizDoc) => {
+        if (quizDoc.data().schoolId === user.schoolId)
+          quizzes.push({ id: quizDoc.id, ...quizDoc.data() });
+      });
 
       setQuizzes(quizzes);
 
