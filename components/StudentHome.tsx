@@ -55,8 +55,15 @@ export default function StudentHome() {
       let quizzes: any = [];
 
       quizzesSnapshot.forEach((quizDoc) => {
-        if (quizDoc.data().schoolId === user.schoolId)
-          quizzes.push({ id: quizDoc.id, ...quizDoc.data() });
+        if (user.isLoneStudent) {
+          if (quizDoc.data().createdBy.userId === user.uid)
+            quizzes.push({ id: quizDoc.id, ...quizDoc.data() });
+        }
+
+        if (user.schoolId) {
+          if (quizDoc.data().schoolId === user.schoolId)
+            quizzes.push({ id: quizDoc.id, ...quizDoc.data() });
+        }
       });
 
       setQuizzes(quizzes);
@@ -86,7 +93,9 @@ export default function StudentHome() {
   // IF NOT JOINED TO A SCHOOL
   if (user && !user.schoolId && !user.isLoneStudent) return <NotJoinedSchool />;
 
-  if (user)
+  if (user) {
+    const joinedSchool = !user.isLoneStudent;
+
     return (
       <>
         <div className="flex-1 flex flex-col lg:flex-row gap-4 px-8 pt-12">
@@ -98,6 +107,7 @@ export default function StudentHome() {
               <h1 className="text-2xl font-bold text-center">
                 Welcome back {user.name}
               </h1>
+
               {/* # OF GENERATIONS LEFT */}
               <div className="flex flex-col">
                 <h1 className="text-center">
@@ -154,18 +164,21 @@ export default function StudentHome() {
               <h1 className="text-xl font-medium mb-4">Filter Quizzes</h1>
 
               {/* WHO'S QUIZZES */}
-              <div className="flex flex-col gap-2">
-                <label className="">By Owner</label>
-                <select
-                  className="p-2 pr-4 border outline"
-                  value={typeOfQuizzesToShow}
-                  // @ts-ignore
-                  onChange={(e) => setTypeOfQuizzesToShow(e.target.value)}
-                >
-                  <option>All</option>
-                  <option>My Quizzes</option>
-                </select>
-              </div>
+
+              {joinedSchool && (
+                <div className="flex flex-col gap-2">
+                  <label className="">By Owner</label>
+                  <select
+                    className="p-2 pr-4 border outline"
+                    value={typeOfQuizzesToShow}
+                    // @ts-ignore
+                    onChange={(e) => setTypeOfQuizzesToShow(e.target.value)}
+                  >
+                    <option>All</option>
+                    <option>My Quizzes</option>
+                  </select>
+                </div>
+              )}
 
               {/* SUBJECT */}
               <div className="flex flex-col gap-2">
@@ -270,4 +283,5 @@ export default function StudentHome() {
         />
       </>
     );
+  }
 }
