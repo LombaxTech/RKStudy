@@ -25,5 +25,5 @@ export default function App() {
 
   if (!userLoading && !user) return <NotSignedInScreen />;
 
-  return <div className="">{!user && <div>No user found</div>}</div>;
+  return <NotSignedInScreen />;
 }
