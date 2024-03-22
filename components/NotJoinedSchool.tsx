@@ -98,13 +98,13 @@ export default function NotJoinedSchool() {
           <Link href={"/join-invite-teacher"} className="underline text-lg">
             Joining as a teacher?
           </Link>
+          <h1
+            className="underline cursor-pointer text-lg"
+            onClick={() => setIsOpen(true)}
+          >
+            Continue without a school?
+          </h1>
         </div>
-        {/* <h1
-          className="underline cursor-pointer"
-          onClick={() => setIsOpen(true)}
-        >
-          Continue without joining a school?
-        </h1> */}
       </div>
       <ConfirmationModal isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
@@ -130,7 +130,7 @@ function ConfirmationModal({
   const continueWithoutJoiningSchool = async () => {
     try {
       await updateDoc(doc(db, "users", user.uid), {
-        continuedWithoutSchool: true,
+        isLoneStudent: true,
       });
     } catch (error) {
       console.log(error);
@@ -172,27 +172,29 @@ function ConfirmationModal({
                 </Dialog.Title>
 
                 {/* CREATE QUIZ */}
-                <div className="flex flex-col gap-2 mt-4">
+                <div className="flex flex-col gap-4 mt-4">
                   <p className="">
-                    Joining with a school will give you free access to all
+                    Joining with a school will give you free access to all study
                     features
                   </p>
                   <p className="text-sm font-light">
-                    You can join a school later on too.
+                    (You can join a school later on from your settings.)
                   </p>
 
-                  <button
-                    className="btn btn-sm"
-                    onClick={continueWithoutJoiningSchool}
-                  >
-                    Continue
-                  </button>
-                  <button
-                    className="btn btn-sm btn-primary"
-                    onClick={closeModal}
-                  >
-                    Cancel
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      className="flex-1 btn btn-sm"
+                      onClick={continueWithoutJoiningSchool}
+                    >
+                      Continue
+                    </button>
+                    <button
+                      className="flex-1 btn btn-sm btn-primary"
+                      onClick={closeModal}
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

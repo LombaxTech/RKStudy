@@ -84,7 +84,7 @@ export default function StudentHome() {
   };
 
   // IF NOT JOINED TO A SCHOOL
-  if (user && !user.schoolId) return <NotJoinedSchool />;
+  if (user && !user.schoolId && !user.isLoneStudent) return <NotJoinedSchool />;
 
   if (user)
     return (
