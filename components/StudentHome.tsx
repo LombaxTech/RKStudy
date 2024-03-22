@@ -139,7 +139,7 @@ export default function StudentHome() {
                   className="btn btn-primary"
                   onClick={() => setCreateQuizModalIsOpen(true)}
                 >
-                  Create New Quiz
+                  Create Quiz with AI
                 </button>
                 <Link href={`/quiz/create`} className="w-full">
                   <button className="btn btn-primary w-full">
