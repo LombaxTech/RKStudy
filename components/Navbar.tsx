@@ -77,6 +77,16 @@ export default function Navbar() {
             Sign Out
           </li> */}
 
+            <Link href={`/`} className="font-medium">
+              Quizzes
+            </Link>
+            <Link href={`/notes`} className="font-medium">
+              Notes
+            </Link>
+            <Link href={`/ai-tutor`} className="font-medium">
+              AI Tutor
+            </Link>
+
             <Link href={`/roadmap`} className="font-medium">
               Future Features
             </Link>
