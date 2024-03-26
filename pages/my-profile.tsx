@@ -88,7 +88,9 @@ export default function MyProfile() {
     }
   };
 
-  if (user)
+  if (user) {
+    const joinedSchool = !user.isLoneStudent;
+
     return (
       <div className="p-10 flex flex-col items-center">
         <div className="flex flex-col gap-6 lg:w-4/12 w-full">
@@ -116,7 +118,7 @@ export default function MyProfile() {
               />
             </div>
           ) : (
-            <div className="">
+            <div className="flex flex-col gap-2">
               <h1 className="">You have not joined any schools</h1>
             </div>
           )}
@@ -153,6 +155,7 @@ export default function MyProfile() {
         </div>
       </div>
     );
+  }
 }
 
 // function DeleteAccountModal({

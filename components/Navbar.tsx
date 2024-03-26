@@ -49,6 +49,9 @@ export default function Navbar() {
     }
   };
 
+  const userSetupComplete =
+    !(user?.setup === false) && (user?.schoolId || user?.isLoneStudent);
+
   return (
     <div className="p-4 flex items-center justify-between shadow-md">
       <h1 className="font-bold italic">
@@ -64,13 +67,13 @@ export default function Navbar() {
           </Link>
         )}
 
-        {user && user?.setup === false && (
+        {user && !userSetupComplete && (
           <li className="cursor-pointer" onClick={signout}>
             Sign Out
           </li>
         )}
 
-        {user && !(user?.setup === false) && (
+        {user && userSetupComplete && (
           <>
             {/* <Link href={`/my-profile`}>Profile</Link>
             <li className="cursor-pointer" onClick={signout}>
