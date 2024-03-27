@@ -134,6 +134,7 @@ export default function StudentHome() {
                 </button>
               </div> */}
               <div className="flex flex-col gap-2">
+                {/* <Link href={`/quiz/create/ai`} className="w-full"> */}
                 <button
                   disabled={usageThisMonth >= monthlyLimit}
                   className="btn btn-primary"
@@ -141,7 +142,8 @@ export default function StudentHome() {
                 >
                   Create Quiz with AI
                 </button>
-                <Link href={`/quiz/create`} className="w-full">
+                {/* </Link> */}
+                <Link href={`/quiz/create/manual`} className="w-full">
                   <button className="btn btn-primary w-full">
                     Create Manual Quiz
                   </button>

@@ -15,6 +15,8 @@ import { Fragment, useContext, useRef, useState } from "react";
 import { FaFile } from "react-icons/fa";
 import { createWorker } from "tesseract.js";
 
+type StudyMaterialMode = "file" | "text";
+
 export default function GenerateNotesModal({
   createNotesModalIsOpen,
   setCreateNotesModalIsOpen,
@@ -41,6 +43,9 @@ export default function GenerateNotesModal({
   const [success, setSuccess] = useState(false);
 
   const [file, setFile] = useState<any>(null);
+  const [studyMaterialMode, setStudyMaterialMode] =
+    useState<StudyMaterialMode>("file");
+  const [materialNotes, setMaterialNotes] = useState("");
 
   const fileInputRef = useRef<any>(null);
 
@@ -64,30 +69,77 @@ export default function GenerateNotesModal({
     try {
       console.log("creating notes");
 
-      if (!file) return console.log("You need to add a file");
+      if (studyMaterialMode === "file" && !file)
+        return console.log("You need to add a file");
 
-      // CONVERT THE IMAGE TO BASE 64
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+      if (studyMaterialMode === "file") {
+        // CONVERT THE IMAGE TO BASE 64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
 
-      let res: any;
-      let questions: any;
+        let res: any;
+        let questions: any;
 
-      reader.onload = async () => {
-        let base64img = reader.result;
+        reader.onload = async () => {
+          let base64img = reader.result;
 
-        // GET THE TEXT CONTENT FROM THE IMAGE
-        let textContent = "";
+          // GET THE TEXT CONTENT FROM THE IMAGE
+          let textContent = "";
 
-        const worker = await createWorker("eng");
-        // @ts-ignore
-        const ret = await worker.recognize(base64img);
-        textContent = ret.data.text;
-        await worker.terminate();
+          const worker = await createWorker("eng");
+          // @ts-ignore
+          const ret = await worker.recognize(base64img);
+          textContent = ret.data.text;
+          await worker.terminate();
 
+          // SEND THE TEXT OVER TO OPENAI AND GET A QUIZ BACK
+          res = await axios.post(`/api/generate-notes`, {
+            textContent: `Generate some study notes from the following study material: ${textContent}`,
+          });
+
+          let { notes } = res.data;
+
+          const newNotes = {
+            title: notesTitle,
+            subject,
+            level,
+            createdBy: {
+              userId: user.uid,
+              name: user.name,
+            },
+            ...(user.schoolId && { schoolId: user.schoolId }),
+            createdAt: new Date(),
+            // questions: historyQuiz.questions,
+            notes,
+            public: isNotesPrivate === "Yes" ? false : true,
+          };
+
+          let newNotesDoc = await addDoc(collection(db, "notes"), newNotes);
+
+          setNotes((oldNotes: any) => [
+            ...oldNotes,
+            { id: newNotesDoc.id, ...newNotes },
+          ]);
+
+          // INCREMENT USAGE
+          const monthYear = getMonthAndYearAsString();
+          await updateDoc(doc(db, "users", user.uid), {
+            [`usage.${monthYear}`]: increment(1),
+          });
+
+          console.log("time to run");
+
+          setNotesTitle("");
+          setSuccess(true);
+          setCreatingNotes(false);
+          closeModal();
+        };
+      }
+
+      if (studyMaterialMode === "text") {
         // SEND THE TEXT OVER TO OPENAI AND GET A QUIZ BACK
-        res = await axios.post(`/api/generate-notes`, {
-          textContent: `Generate some study notes from the following study material: ${textContent}`,
+        let res = await axios.post(`/api/generate-notes`, {
+          textContent: `Generate some study notes from the following study material: ${materialNotes}`,
         });
 
         let { notes } = res.data;
@@ -126,7 +178,7 @@ export default function GenerateNotesModal({
         setSuccess(true);
         setCreatingNotes(false);
         closeModal();
-      };
+      }
     } catch (error) {
       console.log(error);
       setError("Something went wrong");
@@ -253,44 +305,70 @@ export default function GenerateNotesModal({
                     </div>
 
                     {/* UPLOAD FILES TO GENERATE QUIZ FROM */}
-                    <div className="flex flex-col gap-2 mt-2">
-                      {/* <label className="">
-                          Upload files to generate quiz from
-                        </label> */}
-                      <input
-                        type="file"
-                        onChange={handleFileChange}
-                        ref={fileInputRef}
-                        style={{ display: "none" }}
-                      />
-                      <button
-                        disabled={file}
-                        className="btn btn-sm"
-                        onClick={() => {
-                          // @ts-ignore
-                          fileInputRef?.current?.click();
-                        }}
-                      >
-                        Choose image to generate notes from
-                      </button>
-
-                      {file && (
-                        <div className="flex justify-center items-center gap-2 mt-4">
-                          <div className="flex flex-col items-center">
-                            <span className="">
-                              <FaFile size={30} />
-                            </span>
-                            <span className="">{file.name}</span>
-                          </div>
+                    {studyMaterialMode === "file" && (
+                      <>
+                        <div className="flex flex-col gap-2 mt-2">
+                          <input
+                            type="file"
+                            onChange={handleFileChange}
+                            ref={fileInputRef}
+                            style={{ display: "none" }}
+                          />
                           <button
+                            disabled={file}
                             className="btn btn-sm"
-                            onClick={() => setFile(null)}
+                            onClick={() => {
+                              // @ts-ignore
+                              fileInputRef?.current?.click();
+                            }}
                           >
-                            Remove
+                            Choose image to generate notes from
                           </button>
+
+                          {file && (
+                            <div className="flex justify-center items-center gap-2 mt-4">
+                              <div className="flex flex-col items-center">
+                                <span className="">
+                                  <FaFile size={30} />
+                                </span>
+                                <span className="">{file.name}</span>
+                              </div>
+                              <button
+                                className="btn btn-sm"
+                                onClick={() => setFile(null)}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
+
+                        <h1
+                          className="underline cursor-pointer"
+                          onClick={() => setStudyMaterialMode("text")}
+                        >
+                          Copy and paste notes?
+                        </h1>
+                      </>
+                    )}
+
+                    {/* COPY AND PASTE TO GENERATE QUIZ FROM */}
+                    {studyMaterialMode === "text" && (
+                      <div className="flex flex-col gap-2 mt-2">
+                        <textarea
+                          className="p-2 border"
+                          placeholder="Enter your notes/study material"
+                          value={materialNotes}
+                          onChange={(e) => setMaterialNotes(e.target.value)}
+                        ></textarea>
+                        <h1
+                          className="underline cursor-pointer"
+                          onClick={() => setStudyMaterialMode("file")}
+                        >
+                          Upload image instead?
+                        </h1>
+                      </div>
+                    )}
 
                     {error && (
                       <div className="p-2 bg-red-200 text-red-500 text-center">
@@ -301,7 +379,11 @@ export default function GenerateNotesModal({
                     <button
                       className="btn btn-primary"
                       onClick={createNotes}
-                      disabled={!file || !notesTitle}
+                      disabled={
+                        !notesTitle ||
+                        (studyMaterialMode === "file" && !file) ||
+                        (studyMaterialMode === "text" && !materialNotes)
+                      }
                     >
                       Create Notes
                     </button>

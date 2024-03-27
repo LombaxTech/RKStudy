@@ -15,6 +15,8 @@ import { Fragment, useContext, useRef, useState } from "react";
 import { FaFile } from "react-icons/fa";
 import { createWorker } from "tesseract.js";
 
+type StudyMaterialMode = "file" | "text";
+
 export default function CreateQuizModal({
   createQuizModalIsOpen,
   setCreateQuizModalIsOpen,
@@ -41,6 +43,9 @@ export default function CreateQuizModal({
   const [success, setSuccess] = useState(false);
 
   const [file, setFile] = useState<any>(null);
+  const [studyMaterialMode, setStudyMaterialMode] =
+    useState<StudyMaterialMode>("file");
+  const [materialNotes, setMaterialNotes] = useState("");
 
   const fileInputRef = useRef<any>(null);
 
@@ -66,39 +71,88 @@ export default function CreateQuizModal({
 
       console.log("creating quiz");
 
-      if (!file) return console.log("You need to add a file");
+      if (studyMaterialMode === "file" && !file)
+        return console.log("You need to add a file");
 
-      // CONVERT THE IMAGE TO BASE 64
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+      if (studyMaterialMode === "file") {
+        // CONVERT THE IMAGE TO BASE 64
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
 
-      let res: any;
-      let questions: any;
+        let res: any;
+        let questions: any;
 
-      reader.onload = async () => {
-        let base64img = reader.result;
+        reader.onload = async () => {
+          let base64img = reader.result;
 
-        // GET THE TEXT CONTENT FROM THE IMAGE
-        let textContent = "";
+          // GET THE TEXT CONTENT FROM THE IMAGE
+          let textContent = "";
 
-        const worker = await createWorker("eng");
-        // @ts-ignore
-        const ret = await worker.recognize(base64img);
-        textContent = ret.data.text;
-        await worker.terminate();
+          const worker = await createWorker("eng");
+          // @ts-ignore
+          const ret = await worker.recognize(base64img);
+          textContent = ret.data.text;
+          await worker.terminate();
 
+          // SEND THE TEXT OVER TO OPENAI AND GET A QUIZ BACK
+          res = await axios.post(`/api/test`, {
+            //  textContent: `Generate a quiz of 5 questions with 3 options using the following content as the revision material: ${textContent}`,
+            textContent: `Generate a quiz of 5 questions using the following content as the revision material: ${textContent}`,
+          });
+
+          let quiz = res.data.quiz;
+          console.log(quiz);
+          questions = JSON.parse(quiz).questions;
+
+          console.log("questions");
+          console.log(questions);
+
+          const newQuiz = {
+            title: quizTitle,
+            subject,
+            level,
+            about: quizAbout,
+            createdBy: {
+              userId: user.uid,
+              name: user.name,
+            },
+            ...(user.schoolId && { schoolId: user.schoolId }),
+            createdAt: new Date(),
+            // questions: historyQuiz.questions,
+            questions,
+            public: isQuizPrivate === "Yes" ? false : true,
+          };
+
+          let newQuizDoc = await addDoc(collection(db, "quizzes"), newQuiz);
+
+          setQuizzes((oldQuizzes: any) => [
+            ...oldQuizzes,
+            { id: newQuizDoc.id, ...newQuiz },
+          ]);
+
+          // INCREMENT USAGE
+          const monthYear = getMonthAndYearAsString();
+          await updateDoc(doc(db, "users", user.uid), {
+            [`usage.${monthYear}`]: increment(1),
+          });
+
+          setQuizTitle("");
+          setQuizAbout("");
+          setSuccess(true);
+          setCreatingQuiz(false);
+          closeModal();
+        };
+      }
+
+      if (studyMaterialMode === "text") {
         // SEND THE TEXT OVER TO OPENAI AND GET A QUIZ BACK
-        res = await axios.post(`/api/test`, {
+        let res = await axios.post(`/api/test`, {
           //  textContent: `Generate a quiz of 5 questions with 3 options using the following content as the revision material: ${textContent}`,
-          textContent: `Generate a quiz of 5 questions using the following content as the revision material: ${textContent}`,
+          textContent: `Generate a quiz of 5 questions using the following content as the revision material: ${materialNotes}`,
         });
 
         let quiz = res.data.quiz;
-        console.log(quiz);
-        questions = JSON.parse(quiz).questions;
-
-        console.log("questions");
-        console.log(questions);
+        let questions = JSON.parse(quiz).questions;
 
         const newQuiz = {
           title: quizTitle,
@@ -130,11 +184,12 @@ export default function CreateQuizModal({
         });
 
         setQuizTitle("");
+        setMaterialNotes("");
         setQuizAbout("");
         setSuccess(true);
         setCreatingQuiz(false);
         closeModal();
-      };
+      }
     } catch (error) {
       console.log(error);
       setError("Something went wrong");
@@ -261,44 +316,70 @@ export default function CreateQuizModal({
                     </div>
 
                     {/* UPLOAD FILES TO GENERATE QUIZ FROM */}
-                    <div className="flex flex-col gap-2 mt-2">
-                      {/* <label className="">
-                          Upload files to generate quiz from
-                        </label> */}
-                      <input
-                        type="file"
-                        onChange={handleFileChange}
-                        ref={fileInputRef}
-                        style={{ display: "none" }}
-                      />
-                      <button
-                        disabled={file}
-                        className="btn btn-sm"
-                        onClick={() => {
-                          // @ts-ignore
-                          fileInputRef?.current?.click();
-                        }}
-                      >
-                        Choose image to generate quiz from
-                      </button>
-
-                      {file && (
-                        <div className="flex justify-center items-center gap-2 mt-4">
-                          <div className="flex flex-col items-center">
-                            <span className="">
-                              <FaFile size={30} />
-                            </span>
-                            <span className="">{file.name}</span>
-                          </div>
+                    {studyMaterialMode === "file" && (
+                      <>
+                        <div className="flex flex-col gap-2 mt-2">
+                          <input
+                            type="file"
+                            onChange={handleFileChange}
+                            ref={fileInputRef}
+                            style={{ display: "none" }}
+                          />
                           <button
+                            disabled={file}
                             className="btn btn-sm"
-                            onClick={() => setFile(null)}
+                            onClick={() => {
+                              // @ts-ignore
+                              fileInputRef?.current?.click();
+                            }}
                           >
-                            Remove
+                            Choose image to generate quiz from
                           </button>
+
+                          {file && (
+                            <div className="flex justify-center items-center gap-2 mt-4">
+                              <div className="flex flex-col items-center">
+                                <span className="">
+                                  <FaFile size={30} />
+                                </span>
+                                <span className="">{file.name}</span>
+                              </div>
+                              <button
+                                className="btn btn-sm"
+                                onClick={() => setFile(null)}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
+
+                        <h1
+                          className="underline cursor-pointer"
+                          onClick={() => setStudyMaterialMode("text")}
+                        >
+                          Copy and paste notes?
+                        </h1>
+                      </>
+                    )}
+
+                    {/* COPY AND PASTE TO GENERATE QUIZ FROM */}
+                    {studyMaterialMode === "text" && (
+                      <div className="flex flex-col gap-2 mt-2">
+                        <textarea
+                          className="p-2 border"
+                          placeholder="Enter your notes/study material"
+                          value={materialNotes}
+                          onChange={(e) => setMaterialNotes(e.target.value)}
+                        ></textarea>
+                        <h1
+                          className="underline cursor-pointer"
+                          onClick={() => setStudyMaterialMode("file")}
+                        >
+                          Upload notes from image?
+                        </h1>
+                      </div>
+                    )}
 
                     {error && (
                       <div className="p-2 bg-red-200 text-red-500 text-center">
@@ -309,7 +390,11 @@ export default function CreateQuizModal({
                     <button
                       className="btn btn-primary"
                       onClick={createQuiz}
-                      disabled={!file || !quizTitle}
+                      disabled={
+                        !quizTitle ||
+                        (studyMaterialMode === "file" && !file) ||
+                        (studyMaterialMode === "text" && !materialNotes)
+                      }
                     >
                       Create Quiz
                     </button>
