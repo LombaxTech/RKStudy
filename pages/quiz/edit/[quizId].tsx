@@ -349,7 +349,10 @@ function AddQuestionModal({
                     <div className="flex flex-col gap-1">
                       {questionOptions.map((option: any, i: any) => {
                         return (
-                          <div className="flex items-center gap-2 w-full">
+                          <div
+                            className="flex items-center gap-2 w-full"
+                            key={i}
+                          >
                             <span className="w-4/12">{option}</span>
                             <label className="text-xs">
                               Is correct answer?
