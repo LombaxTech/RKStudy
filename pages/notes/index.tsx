@@ -77,16 +77,15 @@ export default function NotesHome() {
     if (user) intiNotesAndUsage();
   }, [user]);
 
-  // const deleteQuiz = async (quiz: any) => {
-  //   try {
-  //     console.log(quiz);
-  //     await deleteDoc(doc(db, "quizzes", quiz.id));
-  //     setQuizzes(quizzes.filter((q: any) => q.id !== quiz.id));
-  //     console.log("deleted quiz");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const deleteNote = async (note: any) => {
+    try {
+      await deleteDoc(doc(db, "notes", note.id));
+      setNotes(notes.filter((n: any) => n.id !== note.id));
+      console.log("deleted quiz");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // IF NOT JOINED TO A SCHOOL
   //   if (user && !user.schoolId && !user.isLoneStudent) return <NotJoinedSchool />;
@@ -251,12 +250,12 @@ export default function NotesHome() {
                                 Edit
                               </button>
                             </Link>
-                            {/* <button
+                            <button
                               className="btn"
-                              onClick={() => deleteQuiz(quiz)}
+                              onClick={() => deleteNote(note)}
                             >
-                              Delete Quiz
-                            </button> */}
+                              Delete
+                            </button>
                           </>
                         )}
                       </div>
