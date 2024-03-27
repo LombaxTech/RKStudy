@@ -40,9 +40,9 @@ export default function NotSignedInScreen() {
       }`}
       ref={vantaRef}
     >
-      <h1 className="text-6xl font-bold">RKQuizzer</h1>
+      <h1 className="text-6xl font-bold">RKStudy</h1>
       <h3 className="text-2xl font-normal text-center">
-        Transform Education with Effortless Quiz Creation and Sharing
+        Boost Your Studies With AI
       </h3>
       <Link href={`/signin`}>
         <button className="btn btn-secondary btn-lg">Get Started</button>
