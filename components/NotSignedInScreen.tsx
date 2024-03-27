@@ -42,7 +42,7 @@ export default function NotSignedInScreen() {
     >
       <h1 className="text-6xl font-bold">RKStudy</h1>
       <h3 className="text-2xl font-normal text-center">
-        Boost Your Studies With AI
+        Boost Your Studies With AI Quizzes, Notes And More!
       </h3>
       <Link href={`/signin`}>
         <button className="btn btn-secondary btn-lg">Get Started</button>
