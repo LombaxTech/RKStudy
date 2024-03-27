@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>RKQuizzer</title>
+        <title>RKStudy</title>
       </Head>
       <body>
         <Main />

@@ -55,7 +55,7 @@ export default function Navbar() {
   return (
     <div className="p-4 flex items-center justify-between shadow-md">
       <h1 className="font-bold italic">
-        <Link href={"/"}>RKQuizzer</Link>
+        <Link href={"/"}>RKStudy</Link>
 
         {/* {user && <h1 className="">Type: {user.type}</h1>} */}
       </h1>
