@@ -81,7 +81,7 @@ export default function EditNotes() {
             </div>
           </div>
           {/* QUESTIONS */}
-          <div className={`w-full ${changesExist ? "bg-red-200" : ""}`}>
+          <div className={`w-full`}>
             <textarea
               className="p-2 bg-transparent text-area w-full min-h-[600px]"
               value={notesText}
