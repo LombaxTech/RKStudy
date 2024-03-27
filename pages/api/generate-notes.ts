@@ -10,7 +10,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
         {
           role: "system",
           content:
-            "You are a helpful notes generator. The notes should be based on the content the user provides.",
+            "You are a helpful notes generator. The notes should be based on the content the user provides. format it nicely as a string.",
         },
         { role: "user", content: textContent },
       ],

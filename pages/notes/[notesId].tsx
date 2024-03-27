@@ -48,7 +48,7 @@ export default function ViewNotes() {
             </div>
           </div>
           {/* QUESTIONS */}
-          <div className="">{notes.notes}</div>
+          <pre className="whitespace-normal">{notes.notes}</pre>
         </div>
       </div>
     );
