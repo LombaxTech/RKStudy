@@ -52,6 +52,8 @@ export default function Navbar() {
   const userSetupComplete =
     !(user?.setup === false) && (user?.schoolId || user?.isLoneStudent);
 
+  const isSuperadmin = user?.type === "superadmin";
+
   return (
     <div className="p-4 flex items-center justify-between shadow-md">
       <h1 className="font-bold italic">
@@ -61,6 +63,13 @@ export default function Navbar() {
       </h1>
       <ul className="flex items-center gap-4">
         {/* {!user && <GoogleButton onClick={signinWithGoogle} />} */}
+
+        {user && isSuperadmin && (
+          <>
+            <Link href={"/superadmin/users"}>All Users</Link>
+          </>
+        )}
+
         {!user && (
           <Link href={"signin"}>
             <button className="btn btn-primary btn-sm">Login</button>
