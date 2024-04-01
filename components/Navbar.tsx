@@ -53,6 +53,7 @@ export default function Navbar() {
     !(user?.setup === false) && (user?.schoolId || user?.isLoneStudent);
 
   const isSuperadmin = user?.type === "superadmin";
+  const isStudent = user?.type === "student";
 
   return (
     <div className="p-4 flex items-center justify-between shadow-md">
@@ -84,24 +85,22 @@ export default function Navbar() {
 
         {user && userSetupComplete && (
           <>
-            {/* <Link href={`/my-profile`}>Profile</Link>
-            <li className="cursor-pointer" onClick={signout}>
-            Sign Out
-          </li> */}
-
-            <Link href={`/`} className="font-medium">
-              Quizzes
-            </Link>
-            <Link href={`/notes`} className="font-medium">
-              Notes
-            </Link>
-            <Link href={`/ai-tutor`} className="font-medium">
-              AI Tutor
-            </Link>
-
-            <Link href={`/roadmap`} className="font-medium">
-              Future Features
-            </Link>
+            {isStudent && (
+              <>
+                <Link href={`/`} className="font-medium">
+                  Quizzes
+                </Link>
+                <Link href={`/notes`} className="font-medium">
+                  Notes
+                </Link>
+                <Link href={`/ai-tutor`} className="font-medium">
+                  AI Tutor
+                </Link>
+                <Link href={`/roadmap`} className="font-medium">
+                  Future Features
+                </Link>
+              </>
+            )}
             <div className="dropdown dropdown-end">
               <div
                 tabIndex={0}
