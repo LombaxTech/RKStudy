@@ -3,6 +3,9 @@ import { db } from "@/firebase";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import Link from "next/link";
 import React, { useContext, useEffect, useState } from "react";
+import { FaKey } from "react-icons/fa";
+import { PiExam, PiStudent } from "react-icons/pi";
+import { TbLicense } from "react-icons/tb";
 
 type Student = {
   id: string;
@@ -62,7 +65,10 @@ export default function SchoolHome() {
           <div className="flex-1 flex flex-col gap-4">
             {/* STUDENTS */}
             <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-4">
-              <h1 className="text-xl font-bold">Students</h1>
+              <div className="flex items-center gap-2">
+                <PiStudent size={30} />
+                <h1 className="text-xl font-bold">Students</h1>
+              </div>
               <div className="flex flex-col gap-2">
                 {school.students &&
                   school.students.map((student: Student) => {
@@ -84,7 +90,10 @@ export default function SchoolHome() {
 
             {/* QUIZZES */}
             <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-4">
-              <h1 className="text-xl font-bold">Generated Quizzes</h1>
+              <div className="flex items-center gap-2">
+                <PiExam size={30} />
+                <h1 className="text-xl font-bold">Generated Quizzes</h1>
+              </div>
               {quizzes && (
                 <div className="flex flex-col gap-4">
                   <h1 className="">{quizzes.length} Quizzes Created</h1>
@@ -121,8 +130,10 @@ export default function SchoolHome() {
           <div className="flex-1 flex flex-col gap-4">
             {/* INVITATION CODE */}
             <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-4">
-              <h1 className="text-xl font-bold">Invitation Codes</h1>
-
+              <div className="flex items-center gap-2">
+                <FaKey size={25} />
+                <h1 className="text-xl font-bold">Invitation Codes</h1>
+              </div>
               <div className="flex flex-col gap-2">
                 <h1 className="text-lg font-medium">Student</h1>
                 {invites &&
@@ -167,7 +178,10 @@ export default function SchoolHome() {
 
             {/* STUDENT LICENSES */}
             <div className="p-4 rounded-md bg-white shadow-md flex flex-col gap-2">
-              <h1 className="text-xl font-bold">Student Licenses</h1>
+              <div className="flex items-center gap-2">
+                <TbLicense size={30} />
+                <h1 className="text-xl font-bold">Student Licenses</h1>
+              </div>
               <h1 className="text-2xl font-medium p-4 border-2 w-fit">
                 {school.students.length} used out of {school.licenseLimit}
               </h1>
