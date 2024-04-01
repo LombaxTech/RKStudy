@@ -22,6 +22,11 @@ type Feature = {
 
 const futureFeatures = [
   {
+    id: "91194e73-62dd-4365-be42-7c2b9da07a4fsji",
+    title: "Study Buddies",
+    description: "Find other students to study together with",
+  },
+  {
     id: "91194e73-62dd-4365-be42-7c2b9da07a4f",
     title: "Upvote Quiz",
     description: "Upvote other quizzes and sort quizzes by popularity",
