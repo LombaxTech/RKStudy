@@ -12,7 +12,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { Fragment, useContext, useRef, useState } from "react";
-import { FaFile } from "react-icons/fa";
+import { FaFile, FaQuestionCircle } from "react-icons/fa";
 import { createWorker } from "tesseract.js";
 
 type StudyMaterialMode = "file" | "text";
@@ -46,6 +46,8 @@ export default function CreateQuizModal({
   const [studyMaterialMode, setStudyMaterialMode] =
     useState<StudyMaterialMode>("file");
   const [materialNotes, setMaterialNotes] = useState("");
+
+  const [isShowingFileTip, setIsShowingFileTip] = useState(false);
 
   const fileInputRef = useRef<any>(null);
 
@@ -325,16 +327,32 @@ export default function CreateQuizModal({
                             ref={fileInputRef}
                             style={{ display: "none" }}
                           />
-                          <button
-                            disabled={file}
-                            className="btn btn-sm"
-                            onClick={() => {
-                              // @ts-ignore
-                              fileInputRef?.current?.click();
-                            }}
-                          >
-                            Choose image to generate quiz from
-                          </button>
+                          <div className="flex items-center gap-4">
+                            <button
+                              disabled={file}
+                              className="btn btn-sm flex-1"
+                              onClick={() => {
+                                // @ts-ignore
+                                fileInputRef?.current?.click();
+                              }}
+                            >
+                              Choose image to generate quiz from
+                            </button>
+
+                            <FaQuestionCircle
+                              size={20}
+                              className="cursor-pointer"
+                              onClick={() =>
+                                setIsShowingFileTip(!isShowingFileTip)
+                              }
+                            />
+                          </div>
+                          {isShowingFileTip ? (
+                            <div className="text-sm font-light text-gray-400">
+                              Upload an image of your notes or a textbook page
+                              and generate a quiz from it.
+                            </div>
+                          ) : null}
 
                           {file && (
                             <div className="flex justify-center items-center gap-2 mt-4">
@@ -358,7 +376,7 @@ export default function CreateQuizModal({
                           className="underline cursor-pointer"
                           onClick={() => setStudyMaterialMode("text")}
                         >
-                          Copy and paste notes?
+                          Type or paste in notes instead.
                         </h1>
                       </>
                     )}
@@ -368,7 +386,7 @@ export default function CreateQuizModal({
                       <div className="flex flex-col gap-2 mt-2">
                         <textarea
                           className="p-2 border"
-                          placeholder="Enter your notes/study material"
+                          placeholder="Enter or paste in your notes/study material"
                           value={materialNotes}
                           onChange={(e) => setMaterialNotes(e.target.value)}
                         ></textarea>
@@ -376,7 +394,7 @@ export default function CreateQuizModal({
                           className="underline cursor-pointer"
                           onClick={() => setStudyMaterialMode("file")}
                         >
-                          Upload notes from image?
+                          Upload notes file instead
                         </h1>
                       </div>
                     )}
