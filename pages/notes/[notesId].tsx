@@ -35,7 +35,7 @@ export default function ViewNotes() {
         {/* <button className="btn" onClick={logStuff}>
           Log stuff
         </button> */}
-        <div className="flex flex-col gap-4">
+        <div className="flex-1 flex flex-col gap-4">
           {/* QUIZ INFO */}
           <div className="flex flex-col gap-2 bg-white p-4 rounded-md shadow-md">
             <h1 className="text-xl font-bold">{notes.title}</h1>
@@ -48,7 +48,14 @@ export default function ViewNotes() {
             </div>
           </div>
           {/* QUESTIONS */}
-          <pre className="whitespace-normal">{notes.notes}</pre>
+          {/* <pre className="whitespace-normal">{notes.notes}</pre> */}
+          <div className="w-full">
+            <textarea
+              className="p-2 bg-transparent text-area w-full min-h-[600px] outline-none"
+              value={notes.notes}
+              // onChange={(e) => setNotesText(e.target.value)}
+            ></textarea>
+          </div>
         </div>
       </div>
     );
