@@ -49,8 +49,9 @@ export default function Navbar() {
     }
   };
 
-  const userSetupComplete =
-    !(user?.setup === false) && (user?.schoolId || user?.isLoneStudent);
+  // const userSetupComplete = !(user?.setup === false) && (user?.schoolId || user?.isLoneStudent);
+
+  const userSetupComplete = !(user?.setup === false);
 
   const isSuperadmin = user?.type === "superadmin";
   const isStudent = user?.type === "student";
@@ -90,15 +91,15 @@ export default function Navbar() {
                 <Link href={`/`} className="font-medium">
                   Quizzes
                 </Link>
-                <Link href={`/notes`} className="font-medium">
+                {/* <Link href={`/notes`} className="font-medium">
                   Notes
-                </Link>
+                </Link> */}
                 <Link href={`/ai-tutor`} className="font-medium">
                   AI Tutor
                 </Link>
-                <Link href={`/roadmap`} className="font-medium">
+                {/* <Link href={`/roadmap`} className="font-medium">
                   Future Features
-                </Link>
+                </Link> */}
               </>
             )}
             <div className="dropdown dropdown-end">
