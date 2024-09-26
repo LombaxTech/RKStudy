@@ -96,7 +96,7 @@ export default function CreateManualQuiz() {
   return (
     <>
       <div className="p-10 flex justify-center flex-1">
-        <div className="flex flex-col gap-4">
+        <div className="w-1/3 flex flex-col gap-4">
           {/* QUESTIONS */}
           <h1 className="text-2xl font-bold">Create Custom Quiz</h1>
 
@@ -123,7 +123,7 @@ export default function CreateManualQuiz() {
               />
             </div> */}
 
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <label className="">Select Subject (optional)</label>
               <select
                 className="p-2 w-full max-w-xs border"
@@ -135,9 +135,9 @@ export default function CreateManualQuiz() {
                   return <option key={subject}>{subject}</option>;
                 })}
               </select>
-            </div>
+            </div> */}
 
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <label className="">Select Academic Level (optional)</label>
               <select
                 className="p-2 w-full max-w-xs border"
@@ -149,9 +149,9 @@ export default function CreateManualQuiz() {
                   return <option key={level}>{level}</option>;
                 })}
               </select>
-            </div>
+            </div> */}
 
-            <div className="flex flex-col gap-2">
+            {/* <div className="flex flex-col gap-2">
               <label className="w-full">Make quiz private? </label>
               <select
                 className="p-2 w-full max-w-xs border"
@@ -162,7 +162,7 @@ export default function CreateManualQuiz() {
                 <option>Yes</option>
                 <option>No</option>
               </select>
-            </div>
+            </div> */}
           </div>
 
           <h1 className="text-lg font-medium">Questions</h1>

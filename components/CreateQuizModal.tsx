@@ -263,7 +263,7 @@ export default function CreateQuizModal({
                         onChange={(e) => setQuizTitle(e.target.value)}
                       />
                     </div>
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2">
                       <label className="">About (optional)</label>
 
                       <textarea
@@ -272,9 +272,9 @@ export default function CreateQuizModal({
                         value={quizAbout}
                         onChange={(e) => setQuizAbout(e.target.value)}
                       />
-                    </div>
+                    </div> */}
 
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2">
                       <label className="">Select Subject (optional)</label>
                       <select
                         className="p-2 w-full max-w-xs border"
@@ -286,9 +286,9 @@ export default function CreateQuizModal({
                           return <option key={subject}>{subject}</option>;
                         })}
                       </select>
-                    </div>
+                    </div> */}
 
-                    <div className="flex flex-col gap-2">
+                    {/* <div className="flex flex-col gap-2">
                       <label className="">
                         Select Academic Level (optional)
                       </label>
@@ -302,9 +302,9 @@ export default function CreateQuizModal({
                           return <option key={level}>{level}</option>;
                         })}
                       </select>
-                    </div>
+                    </div> */}
 
-                    <div className="flex items-center gap-3">
+                    {/* <div className="flex items-center gap-3">
                       <label className="w-8/12">Make quiz private? </label>
                       <select
                         className="p-2 w-full max-w-xs border"
@@ -315,7 +315,7 @@ export default function CreateQuizModal({
                         <option>Yes</option>
                         <option>No</option>
                       </select>
-                    </div>
+                    </div> */}
 
                     {/* UPLOAD FILES TO GENERATE QUIZ FROM */}
                     {studyMaterialMode === "file" && (
