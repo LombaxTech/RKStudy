@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>RKStudy</title>
+        <title>RKStudy - Generate Quizzes From Notes</title>
       </Head>
       <body>
         <Main />
