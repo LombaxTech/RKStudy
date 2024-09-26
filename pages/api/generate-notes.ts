@@ -1,5 +1,5 @@
-import { openai } from "@/openai";
-import { NextApiRequest, NextApiResponse } from "next";
+import { openai } from '@/openai';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { textContent } = req.body;
@@ -8,14 +8,14 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     const completion = await openai.chat.completions.create({
       messages: [
         {
-          role: "system",
+          role: 'system',
           content:
-            "You are a helpful notes generator. The notes should be based on the content the user provides. format it nicely as a string.",
+            'You are a helpful notes generator. The notes should be based on the content the user provides. format it nicely as a string.',
         },
-        { role: "user", content: textContent },
+        { role: 'user', content: textContent },
       ],
       max_tokens: 2000,
-      model: "gpt-3.5-turbo",
+      model: 'gpt-3.5-turbo',
     });
 
     let notes = completion.choices[0].message.content;

@@ -1,33 +1,7 @@
-import React, {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  Fragment,
-} from "react";
 import { AuthContext } from "@/context/AuthContext";
-import {
-  db,
-  auth,
-  // storage
-} from "@/firebase";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  setDoc,
-  updateDoc,
-} from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { Dialog, Transition } from "@headlessui/react";
-import {
-  deleteUser,
-  getAuth,
-  reauthenticateWithPopup,
-  signOut,
-} from "firebase/auth";
-import { useRouter } from "next/router";
+import { db } from "@/firebase";
+import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 
 export default function MyProfile() {
   const { user, setUser } = useContext(AuthContext);
