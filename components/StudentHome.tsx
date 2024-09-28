@@ -1,34 +1,13 @@
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  increment,
-  query,
-  updateDoc,
-} from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import Link from "next/link";
-import React, {
-  useContext,
-  useEffect,
-  useState,
-  Fragment,
-  useRef,
-} from "react";
+import { useContext, useEffect, useState } from "react";
 
-import { FaFile } from "react-icons/fa";
-
-import { Dialog, Transition } from "@headlessui/react";
-import NotJoinedSchool from "./NotJoinedSchool";
-import axios from "axios";
-import { createWorker } from "tesseract.js";
-import { getMonthAndYearAsString } from "@/helperFunctions";
 import { studyLevels, subjects } from "@/data";
+import { getMonthAndYearAsString } from "@/helperFunctions";
 import CreateQuizModal from "./CreateQuizModal";
+import NotJoinedSchool from "./NotJoinedSchool";
 
 const monthlyLimit = 15;
 
