@@ -1,14 +1,10 @@
-import { addDoc, collection } from "firebase/firestore";
-import React, { useContext, useEffect } from "react";
+import { useContext } from "react";
 
-import { app, auth, db } from "@/firebase";
-import { AuthContext } from "@/context/AuthContext";
-import { signOut } from "firebase/auth";
-import { useRouter } from "next/router";
+import NotSignedInScreen from "@/components/NotSignedInScreen";
 import SetupAccount from "@/components/SetupAccount";
 import StudentHome from "@/components/StudentHome";
-import Link from "next/link";
-import NotSignedInScreen from "@/components/NotSignedInScreen";
+import { AuthContext } from "@/context/AuthContext";
+import { useRouter } from "next/router";
 
 export default function App() {
   const { user, userLoading } = useContext(AuthContext);
