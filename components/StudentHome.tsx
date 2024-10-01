@@ -4,9 +4,8 @@ import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 
-import { studyLevels, subjects } from "@/data";
 import { getMonthAndYearAsString } from "@/helperFunctions";
-import CreateQuizModal from "./CreateQuizModal";
+import CreatePDFToQuizModal from "./CreatePDFToQuizModal";
 import NotJoinedSchool from "./NotJoinedSchool";
 
 const monthlyLimit = 15;
@@ -140,11 +139,9 @@ export default function StudentHome() {
               ) : null}
             </div>
 
-            {/* TITLE */}
-            <div className="p-8 bg-white rounded-md shadow flex flex-col gap-4">
+            {/* FILTER QUIZZES */}
+            {/* <div className="p-8 bg-white rounded-md shadow flex flex-col gap-4">
               <h1 className="text-xl font-medium mb-4">Filter Quizzes</h1>
-
-              {/* WHO'S QUIZZES */}
 
               {joinedSchool && (
                 <div className="flex flex-col gap-2">
@@ -161,7 +158,6 @@ export default function StudentHome() {
                 </div>
               )}
 
-              {/* SUBJECT */}
               <div className="flex flex-col gap-2">
                 <label className="">By Subject</label>
                 <select
@@ -177,7 +173,6 @@ export default function StudentHome() {
                 </select>
               </div>
 
-              {/* LEVEL */}
               <div className="flex flex-col gap-2">
                 <label className="">By Academic Level</label>
                 <select
@@ -192,7 +187,7 @@ export default function StudentHome() {
                   })}
                 </select>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* QUIZZES */}
@@ -257,7 +252,8 @@ export default function StudentHome() {
 
           {/* <h1 className="text-2xl font-bold">Welcome back {user.name}</h1> */}
         </div>
-        <CreateQuizModal
+
+        <CreatePDFToQuizModal
           createQuizModalIsOpen={createQuizModalIsOpen}
           setCreateQuizModalIsOpen={setCreateQuizModalIsOpen}
           setQuizzes={setQuizzes}
