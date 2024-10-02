@@ -2,6 +2,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
 import { formatDate } from "@/helperFunctions";
 import { doc, getDoc } from "firebase/firestore";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useContext, useEffect, useState } from "react";
 
@@ -14,7 +15,7 @@ type QuizQuestion = {
 export default function Quiz() {
   const { user } = useContext(AuthContext);
   const router = useRouter();
-  const { quizId } = router.query;
+  const { quizId, demo } = router.query;
 
   const [quiz, setQuiz] = useState<any>(null);
 
@@ -24,20 +25,36 @@ export default function Quiz() {
 
   useEffect(() => {
     const fetchQuiz = async () => {
-      let quizDoc = await getDoc(doc(db, "quizzes", quizId as string));
-      setQuiz({ id: quizDoc.id, ...quizDoc.data() });
+      if (demo) {
+        let quiz: any = localStorage.getItem("quiz");
+        quiz = JSON.parse(quiz);
 
-      setQuizState(
-        quizDoc.data()?.questions.map((question: any) => ({
-          questionText: question.questionText,
-          correctAnswer: question.correctAnswer,
-          selectedAnswer: null,
-        }))
-      );
+        if (quiz) {
+          setQuiz(quiz);
+          setQuizState(
+            quiz.questions.map((question: any) => ({
+              questionText: question.questionText,
+              correctAnswer: question.correctAnswer,
+              selectedAnswer: null,
+            }))
+          );
+        }
+      } else {
+        let quizDoc = await getDoc(doc(db, "quizzes", quizId as string));
+        setQuiz({ id: quizDoc.id, ...quizDoc.data() });
+
+        setQuizState(
+          quizDoc.data()?.questions.map((question: any) => ({
+            questionText: question.questionText,
+            correctAnswer: question.correctAnswer,
+            selectedAnswer: null,
+          }))
+        );
+      }
     };
 
-    if (quizId) fetchQuiz();
-  }, [quizId]);
+    if (quizId && router.isReady) fetchQuiz();
+  }, [quizId, router.isReady]);
 
   const logStuff = () => {
     console.log(quizState);
@@ -64,23 +81,28 @@ export default function Quiz() {
 
   if (!quiz) return <h1 className="">Loading quiz...</h1>;
 
-  if (user && quizId && quiz)
+  if ((user || demo) && quizId && quiz && router.isReady) {
     return (
       <div className="p-10 flex justify-center">
-        {/* <button className="btn" onClick={logStuff}>
-          Log stuff
-        </button> */}
         <div className="flex flex-col gap-4">
+          <Link href={demo ? "/demo" : "/"} className="underline">
+            Go Back
+          </Link>
           {/* QUIZ INFO */}
           <div className="flex flex-col gap-2 bg-white p-4 rounded-md shadow-md">
             <h1 className="text-xl font-bold">{quiz.title}</h1>
-            <p className="">{quiz.about}</p>
+
             <div className="flex items-center gap-4">
-              <p className="">
-                Created on: {formatDate(quiz.createdAt.toDate())}
-              </p>
-              <p className="">Created by: {quiz.createdBy.name}</p>
-              {/* <p className="">Is public? {quiz.public ? "yes" : "no"}</p> */}
+              {demo ? (
+                <p className="">
+                  Created on: {formatDate(new Date(quiz.createdAt))}
+                </p>
+              ) : (
+                <p className="">
+                  Created on: {formatDate(quiz.createdAt.toDate())}
+                </p>
+              )}
+              {!demo && <p className="">Created by: {quiz.createdBy.name}</p>}
             </div>
           </div>
           {/* QUESTIONS */}
@@ -166,10 +188,14 @@ export default function Quiz() {
           <button className="btn btn-primary" onClick={checkAnswers}>
             Check Answers
           </button>
-          <button className="btn" onClick={resetQuiz}>
-            Reset
+          <button className="btn btn-outline" onClick={resetQuiz}>
+            Reset Quiz
           </button>
+          <Link href={demo ? "/demo" : "/"} className="underline">
+            Go Back
+          </Link>
         </div>
       </div>
     );
+  }
 }
