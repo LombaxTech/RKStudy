@@ -35,11 +35,12 @@ export default function Demo() {
   return (
     <>
       <div className="flex-1 flex flex-col gap-4 px-8 pt-6">
-        <div className="flex flex-col mb-4">
-          <h1 className="text-2xl font-bold text-center">
+        <div className="flex flex-col mb-4 text-center">
+          <h1 className={`text-2xl font-bold`}>
             {generationAttempts}/{generationLimit} Quizzes Generated
           </h1>
-          <h1 className="text-lg font-normal text-center">
+
+          <h1 className="text-lg font-normal">
             <Link className="underline" href={"/signup"}>
               Create an account
             </Link>{" "}
@@ -50,14 +51,27 @@ export default function Demo() {
         {/* FILE UPLOAD TO  CONVERT */}
         <div className="p-8 px-16 mx-auto h-fit w-fit bg-white rounded-md shadow-md flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <img src={"/test.svg"} className="w-80 mb-6" alt="" />
+            <img src={"/test.svg"} className="w-80 mb-6 mx-auto" alt="" />
             <button
-              // disabled={usageThisMonth >= monthlyLimit}
+              disabled={limitReached}
               className="btn btn-primary"
               onClick={() => setCreateQuizModalIsOpen(true)}
             >
               Create Quiz
             </button>
+            {limitReached && (
+              <div className="flex flex-col gap-0 text-center mt-4">
+                <span className="text-error text-xl font-bold uppercase">
+                  You've used up all your generations.
+                </span>
+                <h1 className="text-lg font-normal">
+                  <Link className="underline" href={"/signup"}>
+                    Create an account
+                  </Link>{" "}
+                  for more free generations
+                </h1>
+              </div>
+            )}
           </div>
         </div>
 
