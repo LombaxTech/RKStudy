@@ -103,7 +103,7 @@ export default function Navbar() {
               <>
                 {links.map((link, i: number) => {
                   return (
-                    <Link href={link.href} className="font-medium">
+                    <Link key={i} href={link.href} className="font-medium">
                       {link.label}
                     </Link>
                   );
