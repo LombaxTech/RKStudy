@@ -63,3 +63,13 @@ export const historyQuiz = {
 export const monthlyLimit = 5;
 
 export const demoGenerationLimit = 2;
+
+export const analyticEvents = {
+  demoQuizGen: "demo-quiz-gen",
+  quizGen: "quiz-gen",
+  demoLimitHit: "demo-limit-hit",
+  limitHit: "limit-hit",
+  signup: "",
+  genError: "gen-error",
+  createAccount: "create-account",
+};
