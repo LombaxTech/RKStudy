@@ -10,6 +10,8 @@ export default function Layout({ children }: { children: any }) {
   const { pathname } = router;
 
   const isChatPage = pathname === "/ai-tutor";
+  const isLandingPage = !userLoading && !user && pathname === "/";
+  const isAuthPage = pathname === "/signup" || pathname === "/signin";
 
   return (
     <div
@@ -17,7 +19,7 @@ export default function Layout({ children }: { children: any }) {
         isChatPage ? "max-h-screen" : ""
       }`}
     >
-      {user && <Navbar />}
+      {isLandingPage || isAuthPage ? null : <Navbar />}
       <div
         className={`flex-1 flex flex-col ${
           isChatPage ? "overflow-y-auto" : ""
