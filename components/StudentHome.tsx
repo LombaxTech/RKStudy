@@ -7,8 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { getMonthAndYearAsString } from "@/helperFunctions";
 import CreatePDFToQuizModal from "./CreatePDFToQuizModal";
 import NotJoinedSchool from "./NotJoinedSchool";
-
-const monthlyLimit = 15;
+import { monthlyLimit } from "@/data";
 
 export default function StudentHome() {
   const { user } = useContext(AuthContext);
@@ -25,6 +24,8 @@ export default function StudentHome() {
   const [selectedLevel, setSelectedLevel] = useState("All");
 
   const [usageThisMonth, setUsageThisMonth] = useState<number>(0);
+
+  let limitReached = usageThisMonth >= monthlyLimit;
 
   useEffect(() => {
     const initQuizzesAndUsage = async () => {
@@ -114,7 +115,7 @@ export default function StudentHome() {
               <div className="flex flex-col gap-2">
                 {/* <Link href={`/quiz/create/ai`} className="w-full"> */}
                 <button
-                  disabled={usageThisMonth >= monthlyLimit}
+                  disabled={limitReached}
                   className="btn btn-primary"
                   onClick={() => setCreateQuizModalIsOpen(true)}
                 >
@@ -127,9 +128,9 @@ export default function StudentHome() {
                   </button>
                 </Link>
               </div>
-              {usageThisMonth >= monthlyLimit ? (
-                <div className="text-center flex flex-col gap-2">
-                  <h1 className="">
+              {limitReached ? (
+                <div className="text-error text-center flex flex-col gap-2">
+                  <h1 className="font-bold text-lg">
                     You have used up your generations for this month
                   </h1>
                   <span className="text-sm">

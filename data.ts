@@ -59,3 +59,5 @@ export const historyQuiz = {
     },
   ],
 };
+
+export const monthlyLimit = 5;
