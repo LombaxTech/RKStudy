@@ -37,10 +37,13 @@ export default function Demo() {
       <div className="flex-1 flex flex-col gap-4 px-8 pt-6">
         <div className="flex flex-col mb-4">
           <h1 className="text-2xl font-bold text-center">
-            {generationAttempts}/{generationLimit} Quizzes Left
+            {generationAttempts}/{generationLimit} Quizzes Generated
           </h1>
           <h1 className="text-lg font-normal text-center">
-            Create an account to unlock more generations
+            <Link className="underline" href={"/signup"}>
+              Create an account
+            </Link>{" "}
+            for more free generations
           </h1>
         </div>
 
@@ -63,8 +66,11 @@ export default function Demo() {
           <div className="flex flex-col">
             <h1 className="text-2xl font-bold">Generated Quizzes</h1>
             <h2 className="text-sm">
-              (You can only view one quiz at a time in the demo. Create an
-              account to view all your quizzes at once)
+              (You can only view one quiz at a time in the demo.{" "}
+              <Link className="underline" href={"/signup"}>
+                Create an account
+              </Link>{" "}
+              to view all your quizzes at once)
             </h2>
           </div>
 
