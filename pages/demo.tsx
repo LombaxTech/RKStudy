@@ -1,10 +1,9 @@
 import CreateDemoQuizModal from "@/components/CreateDemoQuizModal";
 import { AuthContext } from "@/context/AuthContext";
+import { demoGenerationLimit } from "@/data";
 import Link from "next/link";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { FaFile } from "react-icons/fa";
-
-const generationLimit = 3;
 
 export default function Demo() {
   const { user } = useContext(AuthContext);
@@ -30,14 +29,14 @@ export default function Demo() {
     }
   }, []);
 
-  let limitReached = generationAttempts >= generationLimit;
+  let limitReached = generationAttempts >= demoGenerationLimit;
 
   return (
     <>
       <div className="flex-1 flex flex-col gap-4 px-8 pt-6">
         <div className="flex flex-col mb-4 text-center">
           <h1 className={`text-2xl font-bold`}>
-            {generationAttempts}/{generationLimit} Quizzes Generated
+            {generationAttempts}/{demoGenerationLimit} Quizzes Generated
           </h1>
 
           <h1 className="text-lg font-normal">
