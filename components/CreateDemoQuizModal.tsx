@@ -1,15 +1,8 @@
 import { AuthContext } from "@/context/AuthContext";
-import { db, storage } from "@/firebase";
-import { generateRandomId, getMonthAndYearAsString } from "@/helperFunctions";
+import { storage } from "@/firebase";
+import { generateRandomId } from "@/helperFunctions";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
-import {
-  addDoc,
-  collection,
-  doc,
-  increment,
-  updateDoc,
-} from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { FaFile } from "react-icons/fa";
