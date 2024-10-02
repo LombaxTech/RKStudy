@@ -2,11 +2,14 @@ import CreateDemoQuizModal from "@/components/CreateDemoQuizModal";
 import { AuthContext } from "@/context/AuthContext";
 import { demoGenerationLimit } from "@/data";
 import Link from "next/link";
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { FaFile } from "react-icons/fa";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
 export default function Demo() {
   const { user } = useContext(AuthContext);
+  const router = useRouter();
+
+  if (user) router.push("/");
 
   const [quiz, setQuiz] = useState<any>(null);
   const [generationAttempts, setGenerationAttempts] = useState<number>(0);
