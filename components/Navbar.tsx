@@ -2,12 +2,25 @@ import { AuthContext } from "@/context/AuthContext";
 import { auth } from "@/firebase";
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 import Link from "next/link";
-import React, { Fragment, useContext, useState } from "react";
-import GoogleButton from "./GoogleButton";
 import { useRouter } from "next/router";
-import { Dialog, Transition } from "@headlessui/react";
+import { useContext } from "react";
 
 const provider = new GoogleAuthProvider();
+
+const links = [
+  {
+    label: "Quizzes",
+    href: "/",
+  },
+  {
+    label: "AI Tutor",
+    href: "/ai-tutor",
+  },
+  {
+    label: "Feedback",
+    href: "/feedback",
+  },
+];
 
 export default function Navbar() {
   const { user, userLoading } = useContext(AuthContext);
@@ -88,15 +101,22 @@ export default function Navbar() {
           <>
             {isStudent && (
               <>
-                <Link href={`/`} className="font-medium">
+                {links.map((link, i: number) => {
+                  return (
+                    <Link href={link.href} className="font-medium">
+                      {link.label}
+                    </Link>
+                  );
+                })}
+                {/* <Link href={`/`} className="font-medium">
                   Quizzes
-                </Link>
+                </Link> */}
                 {/* <Link href={`/notes`} className="font-medium">
                   Notes
                 </Link> */}
-                <Link href={`/ai-tutor`} className="font-medium">
+                {/* <Link href={`/ai-tutor`} className="font-medium">
                   AI Tutor
-                </Link>
+                </Link> */}
                 {/* <Link href={`/roadmap`} className="font-medium">
                   Future Features
                 </Link> */}

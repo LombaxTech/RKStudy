@@ -75,3 +75,5 @@ export const analyticEvents = {
   genError: "gen-error",
   createAccount: "create-account",
 };
+
+export const contactAddress = `rakib@rkstudy.co.uk`;
