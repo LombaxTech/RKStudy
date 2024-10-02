@@ -37,15 +37,25 @@ export default function CreateDemoQuizModal({
 
   const [creatingQuiz, setCreatingQuiz] = useState(false);
   const [error, setError] = useState("");
+  const [fileSizeError, setFileSizeError] = useState<any>("");
   const [success, setSuccess] = useState(false);
 
   const [file, setFile] = useState<any>(null);
   const [filePreviewUrl, setFilePreviewUrl] = useState("");
 
   useEffect(() => {
-    if (!file) return setFilePreviewUrl("");
+    let fileSizeError = `File must be smaller than 5MB`;
+
+    if (!file) {
+      setFilePreviewUrl("");
+      setFileSizeError("");
+    }
 
     if (file) {
+      if (file.size >= 5 * 1028 * 1028) {
+        setFileSizeError(fileSizeError);
+      }
+
       setFilePreviewUrl(URL.createObjectURL(file));
     }
   }, [file]);
@@ -274,10 +284,21 @@ export default function CreateDemoQuizModal({
                       </div>
                     )}
 
+                    {fileSizeError && (
+                      <div className="p-2 bg-red-200 text-red-500 text-center">
+                        {fileSizeError}
+                      </div>
+                    )}
+
                     <button
                       className="btn btn-primary mt-4"
                       onClick={createQuiz}
-                      disabled={!quizTitle || !file || !numberOfQuestions}
+                      disabled={
+                        !quizTitle ||
+                        !file ||
+                        !numberOfQuestions ||
+                        fileSizeError
+                      }
                     >
                       Create Quiz
                     </button>
