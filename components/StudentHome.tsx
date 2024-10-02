@@ -86,9 +86,10 @@ export default function StudentHome() {
               <h1 className="text-2xl font-bold text-center">
                 Welcome back {user.name}
               </h1>
+              <img src={"/test.svg"} className="w-80 mb-6 mx-auto" alt="" />
 
               {/* # OF GENERATIONS LEFT */}
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <h1 className="text-center">
                   <span className="text-2xl font-medium">
                     {" "}
@@ -100,7 +101,8 @@ export default function StudentHome() {
                 <span className="text-center">
                   generations used this month.
                 </span>
-              </div>
+              </div> */}
+
               {/* <div className="flex gap-2">
                 <button className="btn btn-sm" onClick={logStuff}>
                   Log
@@ -123,7 +125,7 @@ export default function StudentHome() {
                 </button>
                 {/* </Link> */}
                 <Link href={`/quiz/create/manual`} className="w-full">
-                  <button className="btn btn-primary w-full">
+                  <button className="btn btn-outline w-full">
                     Create Manual Quiz
                   </button>
                 </Link>
@@ -133,9 +135,11 @@ export default function StudentHome() {
                   <h1 className="font-bold text-lg">
                     You have used up your generations for this month
                   </h1>
-                  <span className="text-sm">
-                    Upgrade your plan for more generations
-                  </span>
+                  <Link href={`/`}>
+                    <span className="text-sm underline">
+                      Upgrade your plan for more generations
+                    </span>
+                  </Link>
                 </div>
               ) : null}
             </div>

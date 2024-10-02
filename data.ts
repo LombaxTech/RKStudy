@@ -60,7 +60,7 @@ export const historyQuiz = {
   ],
 };
 
-export const monthlyLimit = 5;
+export const monthlyLimit = 7;
 
 export const demoGenerationLimit = 2;
 

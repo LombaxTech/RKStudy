@@ -1,5 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
+import { monthlyLimit } from "@/data";
 import { db } from "@/firebase";
+import { getMonthAndYearAsString } from "@/helperFunctions";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 
@@ -16,6 +18,7 @@ export default function MyProfile() {
   const [error, setError] = useState(false);
 
   const [deleteAccountModalOpen, setDeleteAccountModalOpen] = useState(false);
+  const [usageThisMonth, setUsageThisMonth] = useState<number>(0);
 
   useEffect(() => {
     const initSchool = async () => {
@@ -45,6 +48,13 @@ export default function MyProfile() {
     } else {
       setChangesExist(false);
     }
+
+    if (!user.usage) setUsageThisMonth(0);
+    if (user.usage) {
+      const monthYear = getMonthAndYearAsString();
+      let usageThisMonth = user.usage[monthYear] || 0;
+      setUsageThisMonth(usageThisMonth);
+    }
   }, [user, name, about]);
 
   const saveChanges = async () => {
@@ -68,7 +78,7 @@ export default function MyProfile() {
     return (
       <div className="p-10 flex flex-col items-center">
         <div className="flex flex-col gap-6 lg:w-4/12 w-full">
-          <h1 className="font-bold text-xl">Edit Profile</h1>
+          <h1 className="font-bold text-xl">Settings</h1>
           <div className="flex flex-col gap-2">
             <label>Name: </label>
             <input
@@ -80,7 +90,18 @@ export default function MyProfile() {
               placeholder="name"
             />
           </div>
-          {school ? (
+
+          <div className="flex flex-col gap-2">
+            <label>Usage: </label>
+            <h1 className="">
+              <span className="text-2xl font-medium"> {usageThisMonth} </span>
+              out of
+              <span className="text-2xl font-medium"> {monthlyLimit} </span>
+              <span className="text-center">generations used this month.</span>
+            </h1>
+          </div>
+
+          {/* {school ? (
             <div className="flex flex-col gap-2">
               <label>School: </label>
               <input
@@ -95,7 +116,8 @@ export default function MyProfile() {
             <div className="flex flex-col gap-2">
               <h1 className="">You have not joined any schools</h1>
             </div>
-          )}
+          )} */}
+
           {/* <button
             disabled={!changesExist}
             className="btn btn-primary"
