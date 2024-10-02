@@ -1,9 +1,11 @@
 import { AuthContext } from "@/context/AuthContext";
+import { analyticEvents, demoGenerationLimit } from "@/data";
 import { storage } from "@/firebase";
 import { generateRandomId } from "@/helperFunctions";
 import { Dialog, Transition } from "@headlessui/react";
 import axios from "axios";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { usePlausible } from "next-plausible";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { FaFile } from "react-icons/fa";
 
@@ -18,6 +20,8 @@ export default function CreateDemoQuizModal({
   setQuiz: any;
   setGenerationAttempts: any;
 }) {
+  const plausible = usePlausible();
+
   const closeModal = () => setCreateQuizModalIsOpen(false);
   const openModal = () => setCreateQuizModalIsOpen(true);
 
@@ -99,6 +103,11 @@ export default function CreateDemoQuizModal({
       );
       setGenerationAttempts(generationAttempts);
 
+      plausible(analyticEvents.demoQuizGen);
+      if (generationAttempts === demoGenerationLimit) {
+        plausible(analyticEvents.demoLimitHit);
+      }
+
       setQuizTitle("");
       setSuccess(true);
       setCreatingQuiz(false);
@@ -107,6 +116,7 @@ export default function CreateDemoQuizModal({
       console.log(error);
       setError("Something went wrong");
       setCreatingQuiz(false);
+      plausible(analyticEvents.genError);
     }
   };
 

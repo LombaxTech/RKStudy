@@ -1,20 +1,22 @@
-import Link from "next/link";
-import { useContext, useState } from "react";
+import GoogleButton from "@/components/GoogleButton";
+import { analyticEvents } from "@/data";
+import { auth } from "@/firebase";
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider,
 } from "firebase/auth";
-import { auth, db } from "@/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { usePlausible } from "next-plausible";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { AuthContext } from "@/context/AuthContext";
-import GoogleButton from "@/components/GoogleButton";
+import { useState } from "react";
 
 const provider = new GoogleAuthProvider();
 
 export default function SignIn() {
+  const plausible = usePlausible();
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +42,7 @@ export default function SignIn() {
     try {
       signInWithPopup(auth, provider)
         .then((result) => {
+          plausible(analyticEvents.createAccount);
           const user = result.user;
           console.log(result);
           router.push("/");
@@ -69,6 +72,7 @@ export default function SignIn() {
         email,
         password
       );
+      plausible(analyticEvents.createAccount);
       router.push("/");
     } catch (error: any) {
       console.log(error);
@@ -86,7 +90,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center gap-4 justify-center p-10">
+    <div className="flex-1 flex flex-col items-center gap-4 pt-20">
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold text-center">Create a new account</h1>
         <Link href={"/signin"} className="underline text-center">

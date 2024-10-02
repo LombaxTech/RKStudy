@@ -1,4 +1,5 @@
 import { AuthContext } from "@/context/AuthContext";
+import { analyticEvents, monthlyLimit } from "@/data";
 import { db, storage } from "@/firebase";
 import { getMonthAndYearAsString } from "@/helperFunctions";
 import { Dialog, Transition } from "@headlessui/react";
@@ -11,6 +12,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { usePlausible } from "next-plausible";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { FaFile } from "react-icons/fa";
 
@@ -23,6 +25,8 @@ export default function CreatePDFToQuizModal({
   setCreateQuizModalIsOpen: any;
   setQuizzes: any;
 }) {
+  const plausible = usePlausible();
+
   const closeModal = () => setCreateQuizModalIsOpen(false);
   const openModal = () => setCreateQuizModalIsOpen(true);
 
@@ -104,6 +108,11 @@ export default function CreatePDFToQuizModal({
         [`usage.${monthYear}`]: increment(1),
       });
 
+      plausible(analyticEvents.quizGen);
+      if (user[`usage.${monthYear}`] === monthlyLimit) {
+        plausible(analyticEvents.limitHit);
+      }
+
       setQuizTitle("");
       setQuizAbout("");
       setSuccess(true);
@@ -113,6 +122,7 @@ export default function CreatePDFToQuizModal({
       console.log(error);
       setError("Something went wrong");
       setCreatingQuiz(false);
+      plausible(analyticEvents.genError);
     }
   };
 

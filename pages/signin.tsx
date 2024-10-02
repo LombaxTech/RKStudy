@@ -1,16 +1,13 @@
-import Link from "next/link";
-import { useContext, useState } from "react";
+import GoogleButton from "@/components/GoogleButton";
+import { auth } from "@/firebase";
 import {
-  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider,
 } from "firebase/auth";
-import { auth, db } from "@/firebase";
-import { doc, setDoc } from "firebase/firestore";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { AuthContext } from "@/context/AuthContext";
-import GoogleButton from "@/components/GoogleButton";
+import { useState } from "react";
 
 const provider = new GoogleAuthProvider();
 
@@ -73,7 +70,7 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center gap-4 justify-center p-10">
+    <div className="flex-1 flex flex-col items-center gap-4 pt-20">
       <div className="flex flex-col gap-2">
         <h1 className="text-2xl font-bold text-center">Sign In</h1>
         <Link href={"/signup"} className="underline">
