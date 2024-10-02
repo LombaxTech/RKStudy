@@ -116,7 +116,7 @@ export default function CreatePDFToQuizModal({
       });
 
       plausible(analyticEvents.quizGen);
-      if (user[`usage.${monthYear}`] === monthlyLimit) {
+      if (user.usage[`${monthYear}`] === monthlyLimit - 1) {
         plausible(analyticEvents.limitHit);
       }
 
