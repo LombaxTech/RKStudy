@@ -1,5 +1,5 @@
 import { AuthContext } from "@/context/AuthContext";
-import { analyticEvents, monthlyLimit } from "@/data";
+import { analyticEvents, maxNumberOfQuizQuestions, monthlyLimit } from "@/data";
 import { db, storage } from "@/firebase";
 import { getMonthAndYearAsString } from "@/helperFunctions";
 import { Dialog, Transition } from "@headlessui/react";
@@ -33,6 +33,7 @@ export default function CreatePDFToQuizModal({
   const { user } = useContext(AuthContext);
 
   const [quizTitle, setQuizTitle] = useState("");
+  const [numberOfQuestions, setNumberOfQuestions] = useState<any>(1);
   const [quizAbout, setQuizAbout] = useState("");
 
   const [creatingQuiz, setCreatingQuiz] = useState(false);
@@ -53,6 +54,12 @@ export default function CreatePDFToQuizModal({
   const fileInputRef = useRef<any>(null);
 
   const createQuiz = async () => {
+    if (numberOfQuestions < 1 || numberOfQuestions > maxNumberOfQuizQuestions) {
+      return setError(
+        `Number of questions must be between 1 and ${maxNumberOfQuizQuestions}`
+      );
+    }
+
     setError("");
     setSuccess(false);
     setCreatingQuiz(true);
@@ -79,7 +86,7 @@ export default function CreatePDFToQuizModal({
       // TODO: SEND THE TEXT OVER TO OPENAI AND GET A QUIZ BACK
       res = await axios.post(`/api/test`, {
         //  textContent: `Generate a quiz of 5 questions with 3 options using the following content as the revision material: ${textContent}`,
-        textContent: `Generate a quiz of 5 questions using the following content as the revision material: ${textContent}`,
+        textContent: `Generate a quiz of ${numberOfQuestions} questions using the following content as the revision material: ${textContent}`,
       });
 
       let quiz = res.data.quiz;
@@ -194,6 +201,24 @@ export default function CreatePDFToQuizModal({
                         onChange={(e) => setQuizTitle(e.target.value)}
                       />
                     </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="flex items-center">
+                        <span className="flex-1">Number of questions</span>{" "}
+                        <span className="text-xs">
+                          (between 1 and {maxNumberOfQuizQuestions})
+                        </span>
+                      </label>
+                      <input
+                        type="number"
+                        min={1}
+                        max={10}
+                        className="p-1 outline-none border"
+                        value={numberOfQuestions}
+                        onChange={(e) => setNumberOfQuestions(e.target.value)}
+                      />
+                    </div>
+
                     <div className="flex flex-col gap-2 mt-2">
                       {/* <button
                         className="btn"
@@ -256,7 +281,7 @@ export default function CreatePDFToQuizModal({
                     <button
                       className="btn btn-primary mt-4"
                       onClick={createQuiz}
-                      disabled={!quizTitle || !file}
+                      disabled={!quizTitle || !file || !numberOfQuestions}
                     >
                       Create Quiz
                     </button>

@@ -64,6 +64,8 @@ export const monthlyLimit = 5;
 
 export const demoGenerationLimit = 2;
 
+export const maxNumberOfQuizQuestions = 10;
+
 export const analyticEvents = {
   demoQuizGen: "demo-quiz-gen",
   quizGen: "quiz-gen",
