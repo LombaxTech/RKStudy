@@ -56,3 +56,14 @@ export async function convertFilesToBase64(files: any) {
   // const mappedFiles = filePaths.map((base64File) => base64File);
   return base64files;
 }
+
+export function generateRandomId(length: number): string {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let result = "";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
