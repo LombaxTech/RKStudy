@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: any }) {
         isChatPage ? "max-h-screen" : ""
       }`}
     >
-      {isLandingPage || isAuthPage ? null : <Navbar />}
+      {isLandingPage ? null : <Navbar />}
       <div
         className={`flex-1 flex flex-col ${
           isChatPage ? "overflow-y-auto" : ""
