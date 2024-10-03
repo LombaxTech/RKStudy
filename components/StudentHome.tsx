@@ -8,6 +8,7 @@ import { getMonthAndYearAsString } from "@/helperFunctions";
 import CreatePDFToQuizModal from "./CreatePDFToQuizModal";
 import NotJoinedSchool from "./NotJoinedSchool";
 import { monthlyLimit } from "@/data";
+import MessageModal from "./MessageModal";
 
 export default function StudentHome() {
   const { user } = useContext(AuthContext);
@@ -15,6 +16,7 @@ export default function StudentHome() {
   const [quizzes, setQuizzes] = useState<any>([]);
 
   const [createQuizModalIsOpen, setCreateQuizModalIsOpen] = useState(false);
+  const [messageModalIsOpen, setMessageModalIsOpen] = useState(false);
 
   const [typeOfQuizzesToShow, setTypeOfQuizzesToShow] = useState<
     "All" | "My Quizzes"
@@ -132,14 +134,16 @@ export default function StudentHome() {
               </div>
               {limitReached ? (
                 <div className="text-error text-center flex flex-col gap-2">
-                  <h1 className="font-bold text-lg">
+                  <h1 className="">
                     You have used up your generations for this month
                   </h1>
-                  <Link href={`/`}>
-                    <span className="text-sm underline">
-                      Upgrade your plan for more generations
-                    </span>
-                  </Link>
+
+                  <span
+                    onClick={() => setMessageModalIsOpen(true)}
+                    className="text-lg font-bold underline cursor-pointer"
+                  >
+                    Get more free generations
+                  </span>
                 </div>
               ) : null}
             </div>
@@ -262,6 +266,10 @@ export default function StudentHome() {
           createQuizModalIsOpen={createQuizModalIsOpen}
           setCreateQuizModalIsOpen={setCreateQuizModalIsOpen}
           setQuizzes={setQuizzes}
+        />
+        <MessageModal
+          messageModalIsOpen={messageModalIsOpen}
+          setMessageModalIsOpen={setMessageModalIsOpen}
         />
       </>
     );
