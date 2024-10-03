@@ -43,7 +43,7 @@ export default function EditQuiz() {
           {/* <button className="btn" onClick={logStuff}>
           Log stuff
         </button> */}
-          <div className="flex flex-col gap-4 w-7/12">
+          <div className="flex flex-col gap-4">
             {/* QUIZ INFO */}
             <div className="flex flex-col gap-2 bg-white p-4 rounded-md shadow-md">
               <h1 className="text-xl font-bold">{quiz.title}</h1>

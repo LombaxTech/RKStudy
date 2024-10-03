@@ -218,7 +218,7 @@ export default function StudentHome() {
 
                   return (
                     <div
-                      className="p-2 px-4 border-2 shadow-sm rounded-md bg-white flex items-center justify-between"
+                      className="p-2 px-4 border-2 shadow-sm rounded-md bg-white flex items-center justify-between overflow-x-auto"
                       key={i}
                     >
                       <h1 className="w-4/12 font-bold">{quiz.title}</h1>
