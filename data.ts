@@ -60,9 +60,9 @@ export const historyQuiz = {
   ],
 };
 
-export const monthlyLimit = 7;
+export const monthlyLimit = 10;
 
-export const demoGenerationLimit = 2;
+export const demoGenerationLimit = 3;
 
 export const maxNumberOfQuizQuestions = 10;
 
