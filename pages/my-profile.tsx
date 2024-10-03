@@ -97,7 +97,9 @@ export default function MyProfile() {
               <span className="text-2xl font-medium"> {usageThisMonth} </span>
               out of
               <span className="text-2xl font-medium"> {monthlyLimit} </span>
-              <span className="text-center">generations used this month.</span>
+              <span className="text-center">
+                AI quiz generations used this month.
+              </span>
             </h1>
           </div>
 

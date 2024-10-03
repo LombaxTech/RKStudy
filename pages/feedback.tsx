@@ -5,7 +5,7 @@ export default function Feedback() {
   return (
     <div className="p-10 flex flex-col gap-4">
       <div className="mx-auto flex flex-col gap-4">
-        <h1 className="text-4xl font-bold">Feedback</h1>
+        <h1 className="text-4xl font-bold">Thanks for using us!</h1>
         <div className="flex flex-col text-lg">
           <h2 className="">Have an idea for a new feature? Or found a bug?</h2>
           <h2 className="">
@@ -14,7 +14,7 @@ export default function Feedback() {
           </h2>
         </div>
         <a href={`mailto:${contactAddress}`}>
-          <button className="btn btn-primary w-fit">Contact Us</button>
+          <button className="btn btn-primary w-fit">Get in touch</button>
         </a>
       </div>
       <div className="mt-10 flex justify-center">
