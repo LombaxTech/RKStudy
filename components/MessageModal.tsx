@@ -54,8 +54,8 @@ export default function MessageModal({
                   <p className="mt-2 text-sm">
                     Therefore, if you would like more free generations, use the
                     button below to send us an email! Set the subject as 'AI
-                    Quiz Generation Request' and let us the email address you
-                    used for your account.
+                    Quiz Generation Request' and let us know the email address
+                    you used for your account.
                   </p>
                   <p className="mb-4 text-sm">
                     Since we are still in the alpha development phase, we do not
