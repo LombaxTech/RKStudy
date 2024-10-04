@@ -21,21 +21,7 @@ export default function Layout({ children }: { children: any }) {
         isChatPage ? "max-h-screen" : ""
       }`}
     >
-      {!isLandingPage && (
-        <div className="p-2 bg-primary text-primary-content">
-          <Link
-            href={"/feedback"}
-            className="flex items-center gap-2 justify-center"
-          >
-            <h1 className="text-center font-bold text-lg">
-              We're still in development!
-            </h1>
-            <h1 className="text-center text-sm underline">
-              Help us make you the best study platform
-            </h1>
-          </Link>
-        </div>
-      )}
+      {!isLandingPage && !isAuthPage && <InDevelopmentNotification />}
       {isLandingPage ? null : <Navbar />}
       <div
         className={`flex-1 flex flex-col ${
@@ -47,3 +33,16 @@ export default function Layout({ children }: { children: any }) {
     </div>
   );
 }
+
+const InDevelopmentNotification = () => (
+  <div className="p-2 bg-primary text-primary-content">
+    <Link href={"/feedback"} className="flex items-center gap-2 justify-center">
+      <h1 className="text-center font-bold text-lg">
+        We're still in development!
+      </h1>
+      <h1 className="text-center text-sm underline">
+        Help us make you the best study platform
+      </h1>
+    </Link>
+  </div>
+);
