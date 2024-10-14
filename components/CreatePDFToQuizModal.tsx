@@ -125,7 +125,7 @@ export default function CreatePDFToQuizModal({
         [`usage.${monthYear}`]: increment(1),
       });
 
-      let userUsage = user.usage[`${monthYear}`] || 0;
+      let userUsage = user.usage?.[monthYear] || 0;
 
       plausible(analyticEvents.quizGen);
       if (userUsage === monthlyLimit - 1) {
