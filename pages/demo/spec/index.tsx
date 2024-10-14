@@ -204,9 +204,7 @@ export default function SpecDemo() {
               {topic.subtopics.map((subtopic, index) => (
                 <li
                   key={subtopic.number}
-                  className={`p-4 ${
-                    index % 2 === 0 ? "bg-gray-50" : "bg-white"
-                  } border border-gray-200 rounded-lg transition-all duration-300 hover:border-gray-400
+                  className={`p-4 border border-gray-200 rounded-lg transition-all duration-300 hover:border-gray-400
                   
                   ${getConfidenceColor(confidence[subtopic.number])}
                   }`}
@@ -277,9 +275,7 @@ export default function SpecDemo() {
                         {subtopic.subtopics.map((subsubtopic, subIndex) => (
                           <li
                             key={subsubtopic.number}
-                            className={`p-3 ${
-                              subIndex % 2 === 0 ? "bg-gray-100" : "bg-white"
-                            } border border-gray-200 rounded-md transition-all duration-300 hover:border-gray-400 ${getConfidenceColor(
+                            className={`p-3 border border-gray-200 rounded-md transition-all duration-300 hover:border-gray-400 ${getConfidenceColor(
                               confidence[subsubtopic.number]
                             )}`}
                             style={{
