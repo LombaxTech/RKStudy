@@ -34,6 +34,7 @@ export default function SetupAccount() {
       email: user.email,
       createdAt: new Date(),
       type: "student",
+      isLoneStudent: true,
       // profilePictureUrl: imageUrl,
     };
 
