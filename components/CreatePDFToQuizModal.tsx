@@ -125,8 +125,10 @@ export default function CreatePDFToQuizModal({
         [`usage.${monthYear}`]: increment(1),
       });
 
+      let userUsage = user.usage[`${monthYear}`] || 0;
+
       plausible(analyticEvents.quizGen);
-      if (user.usage[`${monthYear}`] === monthlyLimit - 1) {
+      if (userUsage === monthlyLimit - 1) {
         plausible(analyticEvents.limitHit);
       }
 
@@ -198,7 +200,6 @@ export default function CreatePDFToQuizModal({
                   >
                     Create Quiz With AI
                   </Dialog.Title>
-
                   {/* CREATE QUIZ */}
                   <div className="flex flex-col gap-4 mt-4">
                     <div className="flex flex-col gap-2">
@@ -307,7 +308,6 @@ export default function CreatePDFToQuizModal({
                       Create Quiz
                     </button>
                   </div>
-
                   {/* UPLOAD FILES TO GENERATE QUIZ FROM */}
                 </Dialog.Panel>
               )}
