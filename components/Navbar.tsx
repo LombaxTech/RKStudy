@@ -86,7 +86,7 @@ export default function Navbar() {
         )}
 
         {!user && (
-          <Link href={"signin"}>
+          <Link href={"/signin"}>
             <button className="btn btn-primary btn-sm">Login</button>
           </Link>
         )}
