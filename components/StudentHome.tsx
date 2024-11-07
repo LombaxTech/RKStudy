@@ -119,12 +119,16 @@ export default function StudentHome() {
               <div className="flex flex-col gap-2">
                 {/* <Link href={`/quiz/create/ai`} className="w-full"> */}
                 <button
-                  disabled={limitReached}
+                  disabled={true}
                   className="btn btn-primary"
                   onClick={() => setCreateQuizModalIsOpen(true)}
                 >
                   Create Quiz with AI
                 </button>
+                <span className="text-error text-center">
+                  AI generation is currently unavailable. Please use the manual
+                  generation button instead.
+                </span>
                 {/* </Link> */}
                 <Link href={`/quiz/create/manual`} className="w-full">
                   <button className="btn btn-outline w-full">

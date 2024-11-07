@@ -55,25 +55,20 @@ export default function Demo() {
           <div className="flex flex-col gap-2">
             <img src={"/test.svg"} className="w-80 mb-6 mx-auto" alt="" />
             <button
-              disabled={limitReached}
+              disabled={true}
               className="btn btn-primary"
               onClick={() => setCreateQuizModalIsOpen(true)}
             >
               Create Quiz
             </button>
-            {limitReached && (
-              <div className="flex flex-col gap-0 text-center mt-4">
-                <span className="text-error text-xl font-bold uppercase">
-                  You've used up all your generations.
-                </span>
-                <h1 className="text-lg font-normal">
-                  <Link className="underline" href={"/signup"}>
-                    Create an account
-                  </Link>{" "}
-                  for more free generations
-                </h1>
-              </div>
-            )}
+            <div className="flex flex-col gap-0 text-center mt-4">
+              <span className="text-error text-xl font-bold uppercase">
+                AI generation is currently unavailable.
+              </span>
+              <h1 className="text-lg font-normal">
+                Please log in and use the manual generation button instead.
+              </h1>
+            </div>
           </div>
         </div>
 
