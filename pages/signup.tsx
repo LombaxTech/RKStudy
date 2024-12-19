@@ -122,10 +122,10 @@ export default function SignIn() {
         <button className="btn btn-primary" onClick={createNewAccount}>
           Create Account
         </button>
-        <GoogleButton
+        {/* <GoogleButton
           onClick={signinWithGoogle}
           buttonText="Make account with Google"
-        />
+        /> */}
         {error && (
           <div className="p-2 bg-red-200 text-red-700 text-center">{error}</div>
         )}
