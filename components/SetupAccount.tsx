@@ -46,16 +46,17 @@ export default function SetupAccount() {
 
   return (
     <div className="p-4 flex flex-col gap-4 items-center">
-      <h1 className="font-bold text-xl">Set up your profile</h1>
-      <input
-        type="text"
-        className="border outline-none p-2"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="name"
-      />
+      <div className="flex flex-col gap-4">
+        <h1 className="font-bold text-xl">Set up your profile</h1>
+        <input
+          type="text"
+          className="border outline-none p-2"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="name"
+        />
 
-      {/* <div className="flex flex-col my-4">
+        {/* <div className="flex flex-col my-4">
         <label>Upload profile picture</label>
         <input
           type="file"
@@ -73,13 +74,14 @@ export default function SetupAccount() {
         )}
       </div> */}
 
-      <button
-        disabled={!name || name.length < 2}
-        className="btn btn-primary"
-        onClick={finishProfileSetup}
-      >
-        Finish Profile Set Up
-      </button>
+        <button
+          disabled={!name || name.length < 2}
+          className="btn btn-primary"
+          onClick={finishProfileSetup}
+        >
+          Finish Profile Set Up
+        </button>
+      </div>
     </div>
   );
 }
