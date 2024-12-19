@@ -15,15 +15,17 @@ export type Subtopic = {
   points: Point[];
 };
 
+export type UserSpec = {
+  id: string;
+  title: string;
+  studyPointConfidenceRatings: {
+    [key: string]: string;
+  };
+};
+
 export type User = {
   id?: string;
   uid?: string;
   email?: string;
-  specs?: {
-    id?: string;
-    title?: string;
-    studyPointConfidenceRatings: {
-      [key: string]: string;
-    };
-  }[];
+  specs?: UserSpec[];
 };
