@@ -8,10 +8,10 @@ import { useContext } from "react";
 const provider = new GoogleAuthProvider();
 
 const links = [
-  {
-    label: "Quizzes",
-    href: "/",
-  },
+  // {
+  //   label: "Quizzes",
+  //   href: "/",
+  // },
   {
     label: "AI Tutor",
     href: "/ai-tutor",
