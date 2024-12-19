@@ -14,6 +14,10 @@ export default function CIEBiologyAS2024() {
 
   const [collapsedTopics, setCollapsedTopics] = useState<string[]>([]);
 
+  const [selectedConfidenceRating, setSelectedConfidenceRating] = useState<
+    ConfidenceRating | ""
+  >("");
+
   const toggleTopicCollapse = (topic: Topic) => {
     if (collapsedTopics.includes(topic.number)) {
       setCollapsedTopics((prev) => prev.filter((t) => t !== topic.number));
@@ -82,16 +86,41 @@ export default function CIEBiologyAS2024() {
 
   return (
     <div className="flex-1 p-4 flex flex-col gap-2">
+      {/* <button
+        className="btn"
+        onClick={() => console.log(selectedConfidenceRating)}
+      >
+        log
+      </button> */}
       {/* GO BACK */}
       <Link href="/test/syllabus">
         <span className="underline cursor-pointer">Go Back</span>
       </Link>
 
-      <h1 className="text-2xl font-bold">CIE Biology AS Level 2024</h1>
+      <div className="flex items-center justify-between">
+        {/* TITLE */}
+        <h1 className="text-2xl font-bold">CIE Biology AS Level 2024</h1>
+        {/* FILTER */}
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">Filter Topics:</span>
+          <select
+            className="outline-none p-2 rounded-md border-2 border-gray-300"
+            value={selectedConfidenceRating}
+            onChange={(e) =>
+              setSelectedConfidenceRating(e.target.value as ConfidenceRating)
+            }
+          >
+            <option value="">All</option>
+            <option value="low">Not Confident</option>
+            <option value="medium">Confident</option>
+            <option value="high">Very Confident</option>
+          </select>
+        </div>
+      </div>
 
       {/* SYLLABUS */}
       {/* TOPICS */}
-      <div className="mt-4 flex flex-col gap-8">
+      <div className="mt-4 flex flex-col gap-4">
         {syllabus.topics.map((topic) => {
           const isTopicCollapsed = collapsedTopics.includes(topic.number);
 
@@ -136,6 +165,13 @@ export default function CIEBiologyAS2024() {
                               .studyPointConfidenceRatings[
                               point.number
                             ] as ConfidenceRating;
+                          }
+
+                          if (
+                            selectedConfidenceRating &&
+                            userConfidenceRating !== selectedConfidenceRating
+                          ) {
+                            return null;
                           }
 
                           return (
