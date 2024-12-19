@@ -23,46 +23,6 @@ export default function SignIn() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    try {
-      let authUser = await signInWithEmailAndPassword(auth, email, password);
-      console.log("res of signin in ");
-      console.log(authUser);
-
-      setSuccess(true);
-    } catch (error) {
-      console.log(error);
-      setError("error");
-    }
-  };
-
-  const signinWithGoogle = async () => {
-    try {
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          plausible(analyticEvents.createAccount);
-          const user = result.user;
-          console.log(result);
-          router.push("/");
-        })
-        .catch((error) => {
-          console.log(error);
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.customData.email;
-          // The AuthCredential type that was used.
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          // ...
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const createNewAccount = async () => {
     setError("");
 

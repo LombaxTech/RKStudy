@@ -1,11 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
-import {
-  db,
-  // storage
-} from "@/firebase";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import React, { useContext, useRef, useState } from "react";
+import { db } from "@/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { useContext, useRef, useState } from "react";
 
 export default function SetupAccount() {
   const { user, setUser } = useContext(AuthContext);
@@ -35,6 +31,7 @@ export default function SetupAccount() {
       createdAt: new Date(),
       type: "student",
       isLoneStudent: true,
+      specs: [],
       // profilePictureUrl: imageUrl,
     };
 
