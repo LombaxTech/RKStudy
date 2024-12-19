@@ -17,7 +17,8 @@ export default function App() {
     router.push(`/superadmin/home`);
   if (!userLoading && user?.type === "teacher") router.push(`/school/home`);
 
-  if (!userLoading && user?.type === "student") return <StudentHome />;
+  // if (!userLoading && user?.type === "student") return <StudentHome />;
+  if (!userLoading && user?.type === "student") router.push("/syllabus");
 
   if (!userLoading && !user) return <NotSignedInScreen />;
 
