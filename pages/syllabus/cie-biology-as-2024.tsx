@@ -93,7 +93,7 @@ export default function CIEBiologyAS2024() {
         log
       </button> */}
       {/* GO BACK */}
-      <Link href="/test/syllabus">
+      <Link href="/syllabus">
         <span className="underline cursor-pointer">Go Back</span>
       </Link>
 
