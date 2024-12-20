@@ -79,7 +79,7 @@ export default function Syllabus() {
       <RemoveSpecModal
         removeSpecModalIsOpen={removeSpecModalIsOpen}
         setRemoveSpecModalIsOpen={setRemoveSpecModalIsOpen}
-        spec={specToRemove as UserSpec}
+        specToRemove={specToRemove as UserSpec}
       />
     </>
   );
