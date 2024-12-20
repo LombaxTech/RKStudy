@@ -69,17 +69,20 @@ export default function NotSignedInScreen() {
 const Home = () => {
   return (
     <div className="flex-1 flex flex-col justify-center items-center gap-6 z-10">
-      <h1 className="text-6xl font-bold">RKStudy</h1>
+      <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-purple-500 to-pink-400">
+        RKStudy
+      </h1>
       <h3 className="text-2xl font-normal text-center">
-        Generate Quizzes From PDF Notes
+        {/* Generate Quizzes From PDF Notes */}
         {/* Boost Your Studies With AI Quizzes, Notes And More! */}
+        Boost Your Grades By Studying More Efficiently.
       </h3>
       <div className="flex flex-col gap-4">
-        <Link href={`/demo`}>
+        {/* <Link href={`/demo`}>
           <button className="btn btn-primary btn-lg">
             Try The Demo (No Account Required)
           </button>
-        </Link>
+        </Link> */}
         <Link href={`/signin`}>
           <button className="w-full btn btn-secondary btn-lg">
             Sign In / Create Account
