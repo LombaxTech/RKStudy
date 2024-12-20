@@ -48,6 +48,7 @@ export default function CIEBiologyAS2024() {
         userCurrentSpec = {
           id: syllabus.id,
           title: syllabus.title,
+          spec: syllabus.spec,
           studyPointConfidenceRatings: {
             [point.number]: rating,
           },
