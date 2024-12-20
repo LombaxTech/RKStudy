@@ -139,6 +139,26 @@ export default function CIEBiologyAS2024() {
       {/* TOPICS */}
       <div className="mt-4 flex flex-col gap-4">
         {syllabus.topics.map((topic) => {
+          // CHECK IF TOPIC HAS ANY VISIBLE POINTS
+          const topicHasVisiblePoints = topic.subtopics.some((subtopic) =>
+            subtopic.points.some((point) => {
+              const matchesConfidence =
+                !selectedConfidenceRating ||
+                userCurrentSpec?.studyPointConfidenceRatings[point.number] ===
+                  selectedConfidenceRating;
+
+              const matchesSearch =
+                !searchTerm ||
+                point.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                point.number.toLowerCase().includes(searchTerm.toLowerCase());
+
+              return matchesConfidence && matchesSearch;
+            })
+          );
+
+          // DON'T RENDER TOPIC IF IT HAS NO VISIBLE POINTS
+          if (!topicHasVisiblePoints) return null;
+
           const isTopicCollapsed = collapsedTopics.includes(topic.number);
 
           return (
@@ -165,6 +185,31 @@ export default function CIEBiologyAS2024() {
                 }`}
               >
                 {topic.subtopics.map((subtopic) => {
+                  // CHECK IF SUBTOPIC HAS ANY VISIBLE POINTS
+                  const subtopicHasVisiblePoints = subtopic.points.some(
+                    (point) => {
+                      const matchesConfidence =
+                        !selectedConfidenceRating ||
+                        userCurrentSpec?.studyPointConfidenceRatings[
+                          point.number
+                        ] === selectedConfidenceRating;
+
+                      const matchesSearch =
+                        !searchTerm ||
+                        point.title
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase()) ||
+                        point.number
+                          .toLowerCase()
+                          .includes(searchTerm.toLowerCase());
+
+                      return matchesConfidence && matchesSearch;
+                    }
+                  );
+
+                  // DON'T RENDER SUBTOPIC IF IT HAS NO VISIBLE POINTS
+                  if (!subtopicHasVisiblePoints) return null;
+
                   return (
                     <div className="" key={subtopic.number}>
                       <h3 className="text-lg font-medium">
