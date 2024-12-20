@@ -33,7 +33,10 @@ export default function Syllabus() {
         {/* ADDED SPECS */}
         {specs &&
           specs.map((spec: UserSpec) => (
-            <div className="p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
+            <div
+              key={spec.id}
+              className="p-4 bg-white rounded-lg shadow-md flex items-center justify-between"
+            >
               <h2 className="text-xl font-bold">{spec.title}</h2>
 
               <Link href={`/syllabus/${spec.id}`}>

@@ -95,7 +95,11 @@ export default function AddSpecModal({
                         // if (user.specs.includes(spec.id)) {
                         //   return null;
                         // }
-                        return <option value={spec.id}>{spec.title}</option>;
+                        return (
+                          <option key={spec.id} value={spec.id}>
+                            {spec.title}
+                          </option>
+                        );
                       })}
                     </select>
                     <button
