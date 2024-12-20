@@ -1,18 +1,13 @@
-import GoogleButton from "@/components/GoogleButton";
 import { analyticEvents } from "@/data";
 import { auth } from "@/firebase";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
 } from "firebase/auth";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-
-const provider = new GoogleAuthProvider();
 
 export default function SignIn() {
   const plausible = usePlausible();
