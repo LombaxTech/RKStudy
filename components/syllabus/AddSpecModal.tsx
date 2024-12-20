@@ -92,9 +92,13 @@ export default function AddSpecModal({
                     >
                       <option value="">Select a syllabus</option>
                       {availableSpecs.map((spec) => {
-                        // if (user.specs.includes(spec.id)) {
-                        //   return null;
-                        // }
+                        if (
+                          user.specs?.some(
+                            (userSpec) => userSpec.id === spec.id
+                          )
+                        ) {
+                          return null;
+                        }
                         return (
                           <option key={spec.id} value={spec.id}>
                             {spec.title}
