@@ -3,6 +3,7 @@
 export const cieBiologyAS2024Syllabus = {
   id: "cie-biology-as-2024",
   title: "CIE Biology AS Level 2024",
+  spec: "cie",
   topics: [
     {
       number: "1",

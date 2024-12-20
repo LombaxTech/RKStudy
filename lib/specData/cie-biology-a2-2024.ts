@@ -3,6 +3,7 @@
 export const cieBiologyA22024Syllabus = {
   id: "cie-biology-a2-2024",
   title: "CIE Biology A2 2024",
+  spec: "cie",
   topics: [
     {
       number: "12",
