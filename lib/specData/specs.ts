@@ -1,5 +1,5 @@
-import { cieBiologyA22024Syllabus } from "./cie-biology-a2-2024";
-import { cieBiologyAS2024Syllabus } from "./cie-biology-as-2024";
+import { cieBiologyA22024Syllabus } from "./cie/cie-biology-a2-2024";
+import { cieBiologyAS2024Syllabus } from "./cie/cie-biology-as-2024";
 
 export const availableSpecs = [
   cieBiologyAS2024Syllabus,
