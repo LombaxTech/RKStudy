@@ -5,7 +5,12 @@ import { Point, Topic, User } from "@/lib/types";
 import { doc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useContext, useState } from "react";
-import { FaFaceFrown, FaFaceMeh, FaFaceSmile } from "react-icons/fa6";
+import {
+  FaArrowLeftLong,
+  FaFaceFrown,
+  FaFaceMeh,
+  FaFaceSmile,
+} from "react-icons/fa6";
 
 type ConfidenceRating = "low" | "medium" | "high";
 
@@ -94,7 +99,9 @@ export default function CIEBiologyAS2024() {
       </button> */}
       {/* GO BACK */}
       <Link href="/syllabus">
-        <span className="underline cursor-pointer">Go Back</span>
+        <span className="underline cursor-pointer">
+          <FaArrowLeftLong />
+        </span>
       </Link>
 
       <div className="flex items-center justify-between">
