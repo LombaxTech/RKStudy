@@ -1,21 +1,19 @@
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
-import { availableSpecs } from "@/lib/specData/specs";
 import { User, UserSpec } from "@/lib/types";
-import { updateDoc } from "firebase/firestore";
-import { doc } from "firebase/firestore";
 import { Dialog, Transition } from "@headlessui/react";
+import { doc, updateDoc } from "firebase/firestore";
 import { usePlausible } from "next-plausible";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext } from "react";
 
 export default function RemoveSpecModal({
   removeSpecModalIsOpen,
   setRemoveSpecModalIsOpen,
-  spec,
+  specToRemove,
 }: {
   removeSpecModalIsOpen: any;
   setRemoveSpecModalIsOpen: any;
-  spec: UserSpec;
+  specToRemove: UserSpec;
 }) {
   const plausible = usePlausible();
 
@@ -28,7 +26,9 @@ export default function RemoveSpecModal({
   const removeSpec = async () => {
     try {
       let prevSpecs = user.specs || [];
-      let updatedSpecs = prevSpecs.filter((spec) => spec.id !== spec.id);
+      let updatedSpecs = prevSpecs.filter(
+        (spec) => spec.id !== specToRemove.id
+      );
 
       await updateDoc(doc(db, "users", user.uid as string), {
         specs: updatedSpecs,
