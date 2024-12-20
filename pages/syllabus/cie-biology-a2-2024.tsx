@@ -104,11 +104,11 @@ export default function CIEBiologyA22024() {
         </span>
       </Link>
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col items-start justify-start gap-2 md:flex-row md:items-center md:justify-between">
         {/* TITLE */}
         <h1 className="text-2xl font-bold">CIE Biology A2 2024</h1>
         {/* SEARCH */}
-        <div className="flex-1 px-16 items-center gap-2">
+        <div className="flex-1 md:px-16 w-full items-center gap-2">
           <input
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -118,7 +118,7 @@ export default function CIEBiologyA22024() {
           />
         </div>
         {/* FILTER */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center self-end gap-2">
           <span className="text-sm font-medium">Filter Topics:</span>
           <select
             className="outline-none p-2 rounded-md border-2 border-gray-300"
