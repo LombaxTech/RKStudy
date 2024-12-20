@@ -55,7 +55,7 @@ export default function Syllabus() {
                 <h2 className="text-xl font-bold">{spec.title}</h2>
 
                 <div className="flex items-center gap-2">
-                  <Link href={`/syllabus/${spec.id}`}>
+                  <Link href={`/syllabus/${spec.spec}/${spec.id}`}>
                     <button className="btn btn-primary btn-sm">View</button>
                   </Link>
                   <button
