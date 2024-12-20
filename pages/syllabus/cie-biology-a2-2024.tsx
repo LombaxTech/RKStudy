@@ -1,6 +1,6 @@
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
-import { cieBiologyA22024Syllabus as syllabus } from "@/lib/specData/cie/cie-biology-a2-2024";
+import { cieBiologyA22024Syllabus as syllabus } from "@/lib/specData/cie/biology/cie-biology-a2-2024";
 import { Point, Topic, User } from "@/lib/types";
 import { doc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
