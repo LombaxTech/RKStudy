@@ -1,10 +1,7 @@
+import { cieBiologyA22024Syllabus } from "./cie-biology-a2-2024";
+import { cieBiologyAS2024Syllabus } from "./cie-biology-as-2024";
+
 export const availableSpecs = [
-  {
-    id: "cie-biology-as-2024",
-    title: "CIE Biology AS Level 2024",
-  },
-  {
-    id: "cie-biology-a2-2024",
-    title: "CIE Biology A2 Level 2024",
-  },
+  cieBiologyAS2024Syllabus,
+  cieBiologyA22024Syllabus,
 ];
