@@ -18,7 +18,7 @@ export default function CIEBiologyAS2024() {
   const { user }: { user: User } = useContext(AuthContext);
 
   const [collapsedTopics, setCollapsedTopics] = useState<string[]>([]);
-
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [selectedConfidenceRating, setSelectedConfidenceRating] = useState<
     ConfidenceRating | ""
   >("");
@@ -98,7 +98,7 @@ export default function CIEBiologyAS2024() {
         log
       </button> */}
       {/* GO BACK */}
-      <Link href="/syllabus">
+      <Link href="/syllabus" className="w-fit">
         <span className="underline cursor-pointer">
           <FaArrowLeftLong />
         </span>
@@ -107,6 +107,16 @@ export default function CIEBiologyAS2024() {
       <div className="flex items-center justify-between">
         {/* TITLE */}
         <h1 className="text-2xl font-bold">CIE Biology AS Level 2024</h1>
+        {/* SEARCH */}
+        <div className="flex-1 px-16 items-center gap-2">
+          <input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            type="text"
+            placeholder="Search syllabus"
+            className="w-full outline-none p-2 rounded-md border-2 border-gray-300"
+          />
+        </div>
         {/* FILTER */}
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">Filter Topics:</span>
@@ -167,6 +177,7 @@ export default function CIEBiologyAS2024() {
                             | ConfidenceRating
                             | undefined;
 
+                          // GET USER CONFIDENCE RATING IF THE USER HAS THIS SPEC SAVED
                           if (userCurrentSpec) {
                             userConfidenceRating = userCurrentSpec
                               .studyPointConfidenceRatings[
@@ -174,9 +185,25 @@ export default function CIEBiologyAS2024() {
                             ] as ConfidenceRating;
                           }
 
+                          // IF THERE IS A SELECTED FILTER, AND THE USER CONFIDENCE RATING DOES NOT MATCH THE SELECTED FILTER, RETURN NULL
                           if (
                             selectedConfidenceRating &&
                             userConfidenceRating !== selectedConfidenceRating
+                          ) {
+                            return null;
+                          }
+
+                          // FILTER BY SEARCH TERM
+                          if (
+                            searchTerm &&
+                            !(
+                              point.title
+                                .toLowerCase()
+                                .includes(String(searchTerm).toLowerCase()) ||
+                              point.number
+                                .toLowerCase()
+                                .includes(String(searchTerm).toLowerCase())
+                            )
                           ) {
                             return null;
                           }
