@@ -102,7 +102,7 @@ const SpecCard = ({
           </Link>
           <FaTrash
             size={20}
-            className="cursor-pointer"
+            className="cursor-pointer hover:scale-125 transition-all duration-300"
             onClick={() => {
               setSubjectToRemove(spec);
               setRemoveSubjectModalIsOpen(true);
