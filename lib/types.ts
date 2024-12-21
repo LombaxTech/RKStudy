@@ -49,6 +49,8 @@ export type User = {
   disabledGuides?: {
     [key: string]: boolean;
   };
+  lastSeen: Date;
+  studyStreak: number;
 };
 
 export type ConfidenceRating = "low" | "medium" | "high";
