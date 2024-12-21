@@ -3,6 +3,10 @@ import React, { useContext, useEffect } from "react";
 import Navbar from "./Navbar";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { isOlderThanYesterday, isToday, isYesterday } from "@/helperFunctions";
+import { updateDoc } from "firebase/firestore";
+import { doc } from "firebase/firestore";
+import { db } from "@/firebase";
 
 export default function Layout({ children }: { children: any }) {
   const { user, userLoading } = useContext(AuthContext);
@@ -21,7 +25,12 @@ export default function Layout({ children }: { children: any }) {
         isChatPage ? "max-h-screen" : ""
       }`}
     >
-      {!isLandingPage && !isAuthPage && <InDevelopmentNotification />}
+      {!isLandingPage && !isAuthPage && (
+        <>
+          <InDevelopmentNotification />
+          <StudyStreak />
+        </>
+      )}
       {isLandingPage ? null : <Navbar />}
       <div
         className={`flex-1 flex flex-col ${
@@ -46,3 +55,44 @@ const InDevelopmentNotification = () => (
     </Link>
   </div>
 );
+
+const StudyStreak = () => {
+  const { user } = useContext(AuthContext);
+
+  useEffect(() => {
+    async function updateStudyStreak() {
+      let lastSeen;
+      if (!user.lastSeen) lastSeen = new Date();
+
+      if (user.lastSeen.nanoseconds) {
+        lastSeen = user.lastSeen.toDate();
+      } else {
+        lastSeen = user.lastSeen;
+      }
+
+      if (isYesterday(lastSeen)) {
+        await updateDoc(doc(db, "users", user.uid), {
+          lastSeen: new Date(),
+          studyStreak: user.studyStreak + 1,
+        });
+      }
+
+      if (isOlderThanYesterday(lastSeen)) {
+        await updateDoc(doc(db, "users", user.uid), {
+          lastSeen: new Date(),
+          studyStreak: 1,
+        });
+      }
+    }
+
+    if (user) updateStudyStreak();
+  }, [user]);
+
+  return (
+    <div className="bg-secondary text-secondary-content p-2">
+      <h1 className="text-center font-bold text-lg">
+        Study Streak: {user?.studyStreak} days
+      </h1>
+    </div>
+  );
+};
