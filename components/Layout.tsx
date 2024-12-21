@@ -91,7 +91,8 @@ const StudyStreak = () => {
   return (
     <div className="bg-secondary text-secondary-content p-2">
       <h1 className="text-center font-bold text-lg">
-        Study Streak: {user?.studyStreak} days
+        Study Streak: {user?.studyStreak} day
+        {user?.studyStreak === 1 ? "" : "s"}
       </h1>
     </div>
   );
