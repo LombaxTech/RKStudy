@@ -1,11 +1,10 @@
 import { AuthContext } from "@/context/AuthContext";
 import { auth } from "@/firebase";
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
-
-const provider = new GoogleAuthProvider();
+import { FaUser } from "react-icons/fa";
 
 const links = [
   // {
@@ -33,31 +32,6 @@ export default function Navbar() {
       router.push("/");
     } catch (error) {
       console.log("error signing out...");
-      console.log(error);
-    }
-  };
-
-  const signinWithGoogle = async () => {
-    try {
-      signInWithPopup(auth, provider)
-        .then((result) => {
-          const user = result.user;
-          console.log(result);
-
-          router.push("/");
-        })
-        .catch((error) => {
-          console.log(error);
-          // Handle Errors here.
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          // The email of the user's account used.
-          const email = error.customData.email;
-          // The AuthCredential type that was used.
-          const credential = GoogleAuthProvider.credentialFromError(error);
-          // ...
-        });
-    } catch (error) {
       console.log(error);
     }
   };
@@ -128,7 +102,7 @@ export default function Navbar() {
                 role="button"
                 className="w-10 h-10 rounded-full flex justify-center items-center bg-primary text-white"
               >
-                <span className="">{user.name[0]}</span>
+                <FaUser />
               </div>
 
               <ul
