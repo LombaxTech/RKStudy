@@ -37,6 +37,8 @@ export default function SignIn() {
         subjects: [],
         type: "student",
         isLoneStudent: true,
+        lastSeen: new Date(),
+        studyStreak: 1,
       });
 
       plausible(analyticEvents.createAccount);
