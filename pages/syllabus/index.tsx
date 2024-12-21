@@ -4,6 +4,7 @@ import { AuthContext } from "@/context/AuthContext";
 import { UserSpec } from "@/lib/types";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
 export default function Syllabus() {
   const { user } = useContext(AuthContext);
@@ -95,19 +96,18 @@ const SpecCard = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-6">
           <Link href={`/syllabus/${spec.spec}/${spec.id}`}>
             <button className="btn btn-primary btn-sm">View</button>
           </Link>
-          <button
-            className="btn btn-secondary btn-sm"
+          <FaTrash
+            size={20}
+            className="cursor-pointer"
             onClick={() => {
               setSubjectToRemove(spec);
               setRemoveSubjectModalIsOpen(true);
             }}
-          >
-            Remove
-          </button>
+          />
         </div>
       </div>
     </>
