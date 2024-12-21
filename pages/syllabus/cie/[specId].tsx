@@ -21,6 +21,8 @@ import SpecPageGuideModal from "@/components/syllabus/SpecPageGuideModal";
 import { db } from "@/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import Link from "next/link";
+import { FaPlusCircle } from "react-icons/fa";
+import AddTodoModal from "@/components/syllabus/AddTodoModal";
 
 export default function CieSyllabus() {
   const router = useRouter();
@@ -35,6 +37,10 @@ export default function CieSyllabus() {
   const [selectedConfidenceRating, setSelectedConfidenceRating] = useState<
     ConfidenceRating | ""
   >("");
+
+  const [hoveredPoint, setHoveredPoint] = useState<string | null>(null);
+  const [pointToAddToTodo, setPointToAddToTodo] = useState<Point | null>(null);
+  const [addTodoModalIsOpen, setAddTodoModalIsOpen] = useState<boolean>(false);
 
   // FETCH SYLLABUS
   useEffect(() => {
@@ -326,6 +332,10 @@ export default function CieSyllabus() {
                               <div
                                 className="flex items-center gap-4"
                                 key={point.number}
+                                onMouseEnter={() =>
+                                  setHoveredPoint(point.number)
+                                }
+                                onMouseLeave={() => setHoveredPoint(null)}
                               >
                                 {/* CONFIDENCE RATING */}
                                 <div className="flex items-center gap-1">
@@ -372,11 +382,24 @@ export default function CieSyllabus() {
                                     />
                                   </span>
                                 </div>
-
                                 {/* POINT NUMBER AND TITLE */}
                                 <h4 className="text-base font-normal">
                                   {point.number} - {point.title}
                                 </h4>
+                                <div
+                                  className="flex items-center gap-2"
+                                  onClick={() => {
+                                    setPointToAddToTodo(point);
+                                    setAddTodoModalIsOpen(true);
+                                  }}
+                                >
+                                  <FaPlusCircle className="cursor-pointer hover:scale-125 transition-all duration-300" />
+                                  {hoveredPoint === point.number && (
+                                    <span className="text-sm font-medium underline cursor-pointer">
+                                      Add to my todo list
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                             );
                           })}
@@ -391,6 +414,13 @@ export default function CieSyllabus() {
         </div>
       </div>
       {user.disabledGuides?.specPageGuide ? null : <SpecPageGuideModal />}
+      {addTodoModalIsOpen && (
+        <AddTodoModal
+          addTodoModalIsOpen={addTodoModalIsOpen}
+          setAddTodoModalIsOpen={setAddTodoModalIsOpen}
+          point={pointToAddToTodo}
+        />
+      )}
     </>
   );
 }
