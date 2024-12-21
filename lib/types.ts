@@ -24,18 +24,26 @@ export type UserSpec = {
   };
 };
 
-export type User = {
-  id?: string;
-  uid?: string;
-  email?: string;
-  specs?: UserSpec[];
-};
-
-export type ConfidenceRating = "low" | "medium" | "high";
-
 export type Syllabus = {
   id: string;
   title: string;
   spec: string;
   topics: Topic[];
 };
+
+export type UserSubject = {
+  id: string;
+  title: string;
+  examBoard: string;
+  topics: Topic[];
+};
+
+export type User = {
+  id?: string;
+  uid?: string;
+  email?: string;
+  subjects?: UserSubject[];
+  specs?: UserSpec[];
+};
+
+export type ConfidenceRating = "low" | "medium" | "high";
