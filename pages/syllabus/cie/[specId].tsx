@@ -114,12 +114,6 @@ export default function CieSyllabus() {
   let userCurrentSpec = user.specs?.find((spec) => spec.id === syllabus.id);
   return (
     <div className="flex-1 p-4 flex flex-col gap-2">
-      {/* <button
-        className="btn"
-        onClick={() => console.log(selectedConfidenceRating)}
-      >
-        log
-      </button> */}
       {/* GO BACK */}
       <Link href="/syllabus" className="w-fit">
         <span className="underline cursor-pointer">
