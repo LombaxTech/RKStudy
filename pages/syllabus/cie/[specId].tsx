@@ -156,7 +156,22 @@ export default function CieSyllabus() {
         {/* HEADER */}
         <div className="flex flex-col items-start justify-start gap-2 md:flex-row md:items-center md:justify-between">
           {/* TITLE */}
-          <h1 className="text-2xl font-bold">{syllabus.title}</h1>
+          <div className="flex flex-col gap-1">
+            <h1 className="text-2xl font-bold">{syllabus.title}</h1>
+            <div className="flex flex-col gap-1">
+              <div className="w-48 h-4 bg-gray-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-blue-500 rounded-full transition-all duration-300"
+                  style={{
+                    width: `${userCurrentSpec?.percentageCompleted || 0}%`,
+                  }}
+                />
+              </div>
+              <p className="text-sm text-gray-500">
+                {userCurrentSpec?.percentageCompleted || 0}% completed
+              </p>
+            </div>
+          </div>
           {/* SEARCH */}
           <div className="flex-1 md:px-16 w-full items-center gap-2">
             <input

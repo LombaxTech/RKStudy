@@ -79,7 +79,21 @@ const SpecCard = ({
   return (
     <>
       <div className="p-4 bg-white rounded-lg shadow-md flex items-center justify-between">
-        <h2 className="text-xl font-bold">{spec.title}</h2>
+        <div className="flex flex-col gap-1">
+          <h2 className="text-xl font-bold">{spec.title}</h2>
+          {/* PERCENTAGE COMPLETED */}
+          <div className="flex flex-col gap-1">
+            <div className="w-48 h-4 bg-gray-200 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-blue-500 rounded-full transition-all duration-300"
+                style={{ width: `${spec.percentageCompleted || 0}%` }}
+              />
+            </div>
+            <p className="text-sm text-gray-500">
+              {spec.percentageCompleted || 0}% completed
+            </p>
+          </div>
+        </div>
 
         <div className="flex items-center gap-2">
           <Link href={`/syllabus/${spec.spec}/${spec.id}`}>
