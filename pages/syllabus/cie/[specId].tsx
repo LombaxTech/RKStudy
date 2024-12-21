@@ -1,6 +1,13 @@
 import { AuthContext } from "@/context/AuthContext";
 import { availableSpecs } from "@/lib/specData/specs";
-import { ConfidenceRating, Point, Syllabus, Topic, User } from "@/lib/types";
+import {
+  ConfidenceRating,
+  Point,
+  Syllabus,
+  Topic,
+  User,
+  UserSpec,
+} from "@/lib/types";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -67,40 +74,63 @@ export default function CieSyllabus() {
       let userOldSpecs = user.specs || [];
       let userNewSpecs: any = [];
 
-      let userCurrentSpec = userOldSpecs?.find(
-        (spec) => spec.id === syllabus.id
-      );
+      let currentSpec = userOldSpecs?.find((spec) => spec.id === syllabus.id);
 
-      if (!userCurrentSpec) {
-        // IF USER CURRENT SPEC DOES NOT EXIST
-        userCurrentSpec = {
+      if (!currentSpec) {
+        // IF USER CURRENT SPEC DOES NOT EXIST, CREATE A NEW ONE
+        currentSpec = {
           id: syllabus.id,
           title: syllabus.title,
           spec: syllabus.spec,
           studyPointConfidenceRatings: {
             [point.number]: rating,
           },
+          percentageCompleted: 0,
         };
 
-        userNewSpecs = [...userOldSpecs, userCurrentSpec];
+        userNewSpecs = [...userOldSpecs, currentSpec];
       } else {
-        // IF USER CURRENT SPEC EXISTS
-
-        let newConfidenceRatings = {
-          ...userCurrentSpec.studyPointConfidenceRatings,
-          [point.number]: rating,
-        };
-
-        let updatedSpec = {
-          ...userCurrentSpec,
-          studyPointConfidenceRatings: newConfidenceRatings,
+        // IF USER CURRENT SPEC EXISTS, UPDATE IT
+        currentSpec = {
+          ...currentSpec,
+          studyPointConfidenceRatings: {
+            ...currentSpec.studyPointConfidenceRatings,
+            [point.number]: rating,
+          },
         };
 
         userNewSpecs = userOldSpecs.map((spec) => {
-          if (spec.id === syllabus.id) return updatedSpec;
+          if (spec.id === syllabus.id) return currentSpec;
           return spec;
         });
       }
+
+      // CALCULATE PERCENTAGE COMPLETED
+      // FIGURE OUT TOTAL NUMBER OF POINTS
+      let totalPoints = 0;
+      syllabus.topics.forEach((topic) => {
+        topic.subtopics.forEach((subtopic) => {
+          totalPoints += subtopic.points.length;
+        });
+      });
+
+      // FIGURE OUT NUMBER OF POINTS THAT HAVE A CONFIDENCE RATING OF HIGHEST
+      let numberOfPointsWithHighestConfidence = 0;
+      Object.values(currentSpec!.studyPointConfidenceRatings).forEach(
+        (rating) => {
+          if (rating === "high") numberOfPointsWithHighestConfidence++;
+        }
+      );
+
+      let percentageCompleted =
+        (numberOfPointsWithHighestConfidence / totalPoints) * 100;
+      percentageCompleted = Math.round(percentageCompleted);
+
+      userNewSpecs = userNewSpecs.map((spec: UserSpec) => {
+        if (spec.id === syllabus.id)
+          return { ...spec, percentageCompleted: percentageCompleted };
+        return spec;
+      });
 
       await updateDoc(doc(db, "users", user.uid as string), {
         specs: userNewSpecs,
@@ -123,6 +153,7 @@ export default function CieSyllabus() {
           </span>
         </Link>
 
+        {/* HEADER */}
         <div className="flex flex-col items-start justify-start gap-2 md:flex-row md:items-center md:justify-between">
           {/* TITLE */}
           <h1 className="text-2xl font-bold">{syllabus.title}</h1>

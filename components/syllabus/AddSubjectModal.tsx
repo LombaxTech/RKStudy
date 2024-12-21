@@ -38,6 +38,7 @@ export default function AddSubjectModal({
         {
           ...spec,
           studyPointConfidenceRatings: {},
+          percentageCompleted: 0,
         },
       ];
 
