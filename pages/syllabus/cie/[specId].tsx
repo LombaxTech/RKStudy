@@ -142,7 +142,9 @@ export default function CieSyllabus() {
         </div>
         {/* FILTER */}
         <div className="flex items-center self-end gap-2">
-          <span className="text-sm font-medium">Filter Topics:</span>
+          <span className="text-sm font-medium">
+            Filter Topics By Confidence:
+          </span>
           <select
             className="outline-none p-2 rounded-md border-2 border-gray-300"
             value={selectedConfidenceRating}
@@ -151,9 +153,9 @@ export default function CieSyllabus() {
             }
           >
             <option value="">All</option>
-            <option value="low">Not Confident</option>
-            <option value="medium">Confident</option>
-            <option value="high">Very Confident</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
           </select>
         </div>
       </div>
