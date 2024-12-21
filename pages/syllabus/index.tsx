@@ -1,5 +1,5 @@
-import AddSpecModal from "@/components/syllabus/AddSpecModal";
-import RemoveSpecModal from "@/components/syllabus/RemoveSpecModal";
+import AddSubjectModal from "@/components/syllabus/AddSubjectModal";
+import RemoveSubjectModal from "@/components/syllabus/RemoveSubjectModal";
 import { AuthContext } from "@/context/AuthContext";
 import { UserSpec } from "@/lib/types";
 import Link from "next/link";
@@ -8,13 +8,15 @@ import { useContext, useEffect, useState } from "react";
 export default function Syllabus() {
   const { user } = useContext(AuthContext);
 
-  const [addSpecModalIsOpen, setAddSpecModalIsOpen] = useState(false);
-  const [removeSpecModalIsOpen, setRemoveSpecModalIsOpen] = useState(false);
-  const [specToRemove, setSpecToRemove] = useState<UserSpec | null>(null);
+  const [addSubjectModalIsOpen, setAddSubjectModalIsOpen] = useState(false);
+  const [removeSubjectModalIsOpen, setRemoveSubjectModalIsOpen] =
+    useState(false);
+  const [subjectToRemove, setSubjectToRemove] = useState<UserSpec | null>(null);
 
   const [specs, setSpecs] = useState<any[]>([]);
   const [availableSpecs, setAvailableSpecs] = useState<any[]>([]);
 
+  // GET SPECS
   useEffect(() => {
     if (!user) return;
 
@@ -28,14 +30,14 @@ export default function Syllabus() {
       <div className="flex-1 p-4 flex flex-col gap-2">
         {/* TITLE AND ADD SPEC BUTTON */}
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Syllabuses</h1>
+          <h1 className="text-2xl font-bold">My Subjects</h1>
 
           {specs.length > 0 && (
             <button
               className="btn btn-primary btn-sm"
-              onClick={() => setAddSpecModalIsOpen(true)}
+              onClick={() => setAddSubjectModalIsOpen(true)}
             >
-              Add a new syllabus
+              Add a new subject
             </button>
           )}
         </div>
@@ -61,8 +63,8 @@ export default function Syllabus() {
                   <button
                     className="btn btn-secondary btn-sm"
                     onClick={() => {
-                      setSpecToRemove(spec);
-                      setRemoveSpecModalIsOpen(true);
+                      setSubjectToRemove(spec);
+                      setRemoveSubjectModalIsOpen(true);
                     }}
                   >
                     Remove
@@ -72,39 +74,39 @@ export default function Syllabus() {
             ))}
         </div>
       </div>
-      <AddSpecModal
-        addSpecModalIsOpen={addSpecModalIsOpen}
-        setAddSpecModalIsOpen={setAddSpecModalIsOpen}
+      <AddSubjectModal
+        addSubjectModalIsOpen={addSubjectModalIsOpen}
+        setAddSubjectModalIsOpen={setAddSubjectModalIsOpen}
       />
-      <RemoveSpecModal
-        removeSpecModalIsOpen={removeSpecModalIsOpen}
-        setRemoveSpecModalIsOpen={setRemoveSpecModalIsOpen}
-        specToRemove={specToRemove as UserSpec}
+      <RemoveSubjectModal
+        removeSubjectModalIsOpen={removeSubjectModalIsOpen}
+        setRemoveSubjectModalIsOpen={setRemoveSubjectModalIsOpen}
+        subjectToRemove={subjectToRemove as UserSpec}
       />
     </>
   );
 }
 
 const NoSpecsSelectedYet = () => {
-  const [addSpecModalIsOpen, setAddSpecModalIsOpen] = useState(false);
+  const [addSubjectModalIsOpen, setAddSubjectModalIsOpen] = useState(false);
 
   return (
     <>
       <div className="p-4 bg-white rounded-lg shadow-md flex flex-col gap-2">
-        <h2 className="text-xl font-bold">No specs selected yet</h2>
+        <h2 className="text-xl font-bold">No subjects selected yet</h2>
         <p className="text-sm text-gray-500">
-          No specs selected yet. Please select a spec to view the syllabus.
+          No subjects selected yet. Please add a subject to get started.
         </p>
         <button
           className="btn btn-primary btn-sm w-fit"
-          onClick={() => setAddSpecModalIsOpen(true)}
+          onClick={() => setAddSubjectModalIsOpen(true)}
         >
-          Select a spec
+          Add a subject
         </button>
       </div>
-      <AddSpecModal
-        addSpecModalIsOpen={addSpecModalIsOpen}
-        setAddSpecModalIsOpen={setAddSpecModalIsOpen}
+      <AddSubjectModal
+        addSubjectModalIsOpen={addSubjectModalIsOpen}
+        setAddSubjectModalIsOpen={setAddSubjectModalIsOpen}
       />
     </>
   );
