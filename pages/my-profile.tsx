@@ -79,7 +79,7 @@ export default function MyProfile() {
       <div className="p-10 flex flex-col items-center">
         <div className="flex flex-col gap-6 lg:w-4/12 w-full">
           <h1 className="font-bold text-xl">Settings</h1>
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <label>Name: </label>
             <input
               disabled={true}
@@ -89,9 +89,9 @@ export default function MyProfile() {
               onChange={(e) => setName(e.target.value)}
               placeholder="name"
             />
-          </div>
+          </div> */}
 
-          <div className="flex flex-col gap-2">
+          {/* <div className="flex flex-col gap-2">
             <label>Usage: </label>
             <h1 className="">
               <span className="text-2xl font-medium"> {usageThisMonth} </span>
@@ -101,7 +101,7 @@ export default function MyProfile() {
                 AI quiz generations used this month.
               </span>
             </h1>
-          </div>
+          </div> */}
 
           {/* {school ? (
             <div className="flex flex-col gap-2">
