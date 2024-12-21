@@ -155,7 +155,7 @@ export default function CieSyllabus() {
 
         {/* HEADER */}
         <div className="flex flex-col items-start justify-start gap-2 md:flex-row md:items-center md:justify-between">
-          {/* TITLE */}
+          {/* TITLE AND PERCENTAGE COMPLETED */}
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-bold">{syllabus.title}</h1>
             <div className="flex flex-col gap-1">
@@ -183,7 +183,7 @@ export default function CieSyllabus() {
             />
           </div>
           {/* FILTER */}
-          <div className="flex items-center self-end gap-2">
+          <div className="flex items-center self-end md:self-center gap-2">
             <span className="text-sm font-medium">
               Filter Topics By Confidence:
             </span>
