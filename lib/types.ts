@@ -44,6 +44,9 @@ export type User = {
   email?: string;
   subjects?: UserSubject[];
   specs?: UserSpec[];
+  disabledGuides?: {
+    [key: string]: boolean;
+  };
 };
 
 export type ConfidenceRating = "low" | "medium" | "high";
