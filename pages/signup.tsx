@@ -1,9 +1,11 @@
 import { analyticEvents } from "@/data";
-import { auth } from "@/firebase";
+import { auth, db } from "@/firebase";
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
 } from "firebase/auth";
+import { doc } from "firebase/firestore";
+import { setDoc } from "firebase/firestore";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -27,6 +29,16 @@ export default function SignIn() {
         email,
         password
       );
+
+      await setDoc(doc(db, "users", userCred.user.uid), {
+        email,
+        createdAt: new Date(),
+        specs: [],
+        subjects: [],
+        type: "student",
+        isLoneStudent: true,
+      });
+
       plausible(analyticEvents.createAccount);
       router.push("/");
     } catch (error: any) {
