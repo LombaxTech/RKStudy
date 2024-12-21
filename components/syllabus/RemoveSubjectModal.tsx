@@ -6,19 +6,19 @@ import { doc, updateDoc } from "firebase/firestore";
 import { usePlausible } from "next-plausible";
 import { Fragment, useContext } from "react";
 
-export default function RemoveSpecModal({
-  removeSpecModalIsOpen,
-  setRemoveSpecModalIsOpen,
-  specToRemove,
+export default function RemoveSubjectModal({
+  removeSubjectModalIsOpen,
+  setRemoveSubjectModalIsOpen,
+  subjectToRemove,
 }: {
-  removeSpecModalIsOpen: any;
-  setRemoveSpecModalIsOpen: any;
-  specToRemove: UserSpec;
+  removeSubjectModalIsOpen: any;
+  setRemoveSubjectModalIsOpen: any;
+  subjectToRemove: UserSpec;
 }) {
   const plausible = usePlausible();
 
-  const closeModal = () => setRemoveSpecModalIsOpen(false);
-  const openModal = () => setRemoveSpecModalIsOpen(true);
+  const closeModal = () => setRemoveSubjectModalIsOpen(false);
+  const openModal = () => setRemoveSubjectModalIsOpen(true);
 
   const { user, setUser }: { user: User; setUser: any } =
     useContext(AuthContext);
@@ -27,7 +27,7 @@ export default function RemoveSpecModal({
     try {
       let prevSpecs = user.specs || [];
       let updatedSpecs = prevSpecs.filter(
-        (spec) => spec.id !== specToRemove.id
+        (spec) => spec.id !== subjectToRemove.id
       );
 
       await updateDoc(doc(db, "users", user.uid as string), {
@@ -43,7 +43,7 @@ export default function RemoveSpecModal({
   };
 
   return (
-    <Transition appear show={removeSpecModalIsOpen} as={Fragment}>
+    <Transition appear show={removeSubjectModalIsOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
@@ -71,11 +71,11 @@ export default function RemoveSpecModal({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <div className="flex flex-col gap-8">
                   <h1 className="text-2xl font-medium">
-                    Are you sure you want to remove this syllabus?
+                    Are you sure you want to remove this subject?
                   </h1>
                   <p className="text-sm text-gray-500">
                     This action will remove all of your progress for this
-                    syllabus.
+                    subject.
                   </p>
                   <div className="flex items-center gap-2">
                     <button className="btn btn-primary" onClick={removeSpec}>

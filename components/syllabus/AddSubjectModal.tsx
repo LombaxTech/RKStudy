@@ -8,17 +8,17 @@ import { Dialog, Transition } from "@headlessui/react";
 import { usePlausible } from "next-plausible";
 import { Fragment, useContext, useState } from "react";
 
-export default function AddSpecModal({
-  addSpecModalIsOpen,
-  setAddSpecModalIsOpen,
+export default function AddSubjectModal({
+  addSubjectModalIsOpen,
+  setAddSubjectModalIsOpen,
 }: {
-  addSpecModalIsOpen: any;
-  setAddSpecModalIsOpen: any;
+  addSubjectModalIsOpen: any;
+  setAddSubjectModalIsOpen: any;
 }) {
   const plausible = usePlausible();
 
-  const closeModal = () => setAddSpecModalIsOpen(false);
-  const openModal = () => setAddSpecModalIsOpen(true);
+  const closeModal = () => setAddSubjectModalIsOpen(false);
+  const openModal = () => setAddSubjectModalIsOpen(true);
 
   const { user, setUser }: { user: User; setUser: any } =
     useContext(AuthContext);
@@ -53,7 +53,7 @@ export default function AddSpecModal({
   };
 
   return (
-    <Transition appear show={addSpecModalIsOpen} as={Fragment}>
+    <Transition appear show={addSubjectModalIsOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <Transition.Child
           as={Fragment}
@@ -81,7 +81,7 @@ export default function AddSpecModal({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <div className="flex flex-col gap-8">
                   <h1 className="text-2xl font-bold">
-                    Add a syllabus that you're studying
+                    Add a subject that you're studying
                   </h1>
                   {/* AVAILABLE SYLLABUSES */}
                   <div className="flex flex-col gap-4">
@@ -90,7 +90,7 @@ export default function AddSpecModal({
                       value={selectedSpec}
                       onChange={(e) => setSelectedSpec(e.target.value)}
                     >
-                      <option value="">Select a syllabus</option>
+                      <option value="">Select a subject</option>
                       {availableSpecs.map((spec) => {
                         if (
                           user.specs?.some(
