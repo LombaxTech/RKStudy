@@ -1,12 +1,14 @@
 import { AuthContext } from "@/context/AuthContext";
-import React, { useContext, useEffect } from "react";
-import Navbar from "./Navbar";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { isOlderThanYesterday, isToday, isYesterday } from "@/helperFunctions";
-import { updateDoc } from "firebase/firestore";
-import { doc } from "firebase/firestore";
 import { db } from "@/firebase";
+import { isOlderThanYesterday, isYesterday } from "@/helperFunctions";
+import { showSuccessNotificationAtom } from "@/lib/atoms/atoms";
+import { doc, updateDoc } from "firebase/firestore";
+import { useAtom } from "jotai";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import Navbar from "./Navbar";
+import TodoAddedNotification from "./syllabus/TodoAddedNotification";
 
 export default function Layout({ children }: { children: any }) {
   const { user, userLoading } = useContext(AuthContext);
@@ -19,27 +21,34 @@ export default function Layout({ children }: { children: any }) {
   const isAuthPage = pathname === "/signup" || pathname === "/signin";
   const isDemo = pathname === "/demo";
 
+  const [showSuccessNotification, setShowSuccessNotification] = useAtom(
+    showSuccessNotificationAtom
+  );
+
   return (
-    <div
-      className={`flex flex-col min-h-screen bg-gray-100 overflow-x-hidden ${
-        isChatPage ? "max-h-screen" : ""
-      }`}
-    >
-      {!isLandingPage && !isAuthPage && (
-        <>
-          <InDevelopmentNotification />
-          <StudyStreak />
-        </>
-      )}
-      {isLandingPage ? null : <Navbar />}
+    <>
       <div
-        className={`flex-1 flex flex-col ${
-          isChatPage ? "overflow-y-auto" : ""
+        className={`flex flex-col min-h-screen bg-gray-100 overflow-x-hidden ${
+          isChatPage ? "max-h-screen" : ""
         }`}
       >
-        {children}
+        {!isLandingPage && !isAuthPage && (
+          <>
+            <InDevelopmentNotification />
+            <StudyStreak />
+          </>
+        )}
+        {isLandingPage ? null : <Navbar />}
+        <div
+          className={`flex-1 flex flex-col ${
+            isChatPage ? "overflow-y-auto" : ""
+          }`}
+        >
+          {children}
+        </div>
       </div>
-    </div>
+      {showSuccessNotification && <TodoAddedNotification />}
+    </>
   );
 }
 
