@@ -44,6 +44,7 @@ export default function Syllabus() {
           <div className="flex flex-col gap-2">
             {specs.map((spec: UserSpec) => (
               <SpecCard
+                key={spec.id}
                 spec={spec}
                 setSubjectToRemove={setSubjectToRemove}
                 setRemoveSubjectModalIsOpen={setRemoveSubjectModalIsOpen}
