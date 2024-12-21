@@ -22,6 +22,7 @@ export type UserSpec = {
   studyPointConfidenceRatings: {
     [key: string]: string;
   };
+  percentageCompleted: number;
 };
 
 export type Syllabus = {
