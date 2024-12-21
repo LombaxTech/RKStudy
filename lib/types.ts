@@ -54,3 +54,10 @@ export type User = {
 };
 
 export type ConfidenceRating = "low" | "medium" | "high";
+
+export type Todo = {
+  id?: string;
+  title: string;
+  createdBy: string;
+  createdAt: Date;
+};
