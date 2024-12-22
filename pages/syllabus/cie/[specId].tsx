@@ -414,7 +414,7 @@ export default function CieSyllabus() {
         </div>
       </div>
       {user.disabledGuides?.specPageGuide ? null : <SpecPageGuideModal />}
-      {addTodoModalIsOpen && (
+      {addTodoModalIsOpen && pointToAddToTodo && (
         <AddTodoModal
           addTodoModalIsOpen={addTodoModalIsOpen}
           setAddTodoModalIsOpen={setAddTodoModalIsOpen}
