@@ -90,3 +90,18 @@ export function isYesterday(date: Date) {
 export function isOlderThanYesterday(date: Date) {
   return !isToday(date) && !isYesterday(date) && date < new Date();
 }
+
+export const formatDateForDisplay = (date: any) => {
+  // IF TODAY, RETURN TODAY
+  if (isToday(date)) return "Today";
+
+  // IF YESTERDAY, RETURN YESTERDAY
+  if (isYesterday(date)) return "Yesterday";
+
+  // IF OLDER THAN YESTERDAY, RETURN DATE
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
