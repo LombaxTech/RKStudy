@@ -1,7 +1,7 @@
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
 import { showSuccessNotificationAtom } from "@/lib/atoms/atoms";
-import { Todo, User } from "@/lib/types";
+import { Point, Todo, User, UserSpec } from "@/lib/types";
 import { Dialog, Transition } from "@headlessui/react";
 import { addDoc, collection } from "firebase/firestore";
 import { useAtom } from "jotai";
@@ -12,10 +12,12 @@ export default function AddTodoModal({
   addTodoModalIsOpen,
   setAddTodoModalIsOpen,
   point,
+  spec,
 }: {
   addTodoModalIsOpen: any;
   setAddTodoModalIsOpen: any;
-  point: any;
+  point: Point;
+  spec?: UserSpec;
 }) {
   const plausible = usePlausible();
 
@@ -27,6 +29,9 @@ export default function AddTodoModal({
 
   const [loading, setLoading] = useState(false);
 
+  const [title, setTitle] = useState(point.title);
+  const [dueDate, setDueDate] = useState<Date | null>(null);
+
   const [showSuccessNotification, setShowSuccessNotification] = useAtom(
     showSuccessNotificationAtom
   );
@@ -35,9 +40,18 @@ export default function AddTodoModal({
     setLoading(true);
     try {
       const newTodo: Todo = {
-        title: point.title,
+        title,
         createdBy: user.uid as string,
         createdAt: new Date(),
+        completed: false,
+        point,
+        ...(dueDate && { dueDate: new Date(dueDate) }),
+        ...(spec && {
+          subjectInfo: {
+            id: spec.id,
+            title: spec.title,
+          },
+        }),
       };
 
       await addDoc(collection(db, "todos"), newTodo);
@@ -89,12 +103,37 @@ export default function AddTodoModal({
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <div className="flex flex-col gap-8">
                   <h1 className="text-2xl font-medium">New Task</h1>
-                  <p className="text-sm text-gray-500">{point.title}</p>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="title" className="text-sm font-medium">
+                      Task Title
+                    </label>
+                    <textarea
+                      className="outline-none p-2 rounded-md border-2 border-gray-300"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                  </div>
+
+                  {/* DUE DATE */}
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor="dueDate" className="text-sm font-medium">
+                      Due Date
+                    </label>
+
+                    <input
+                      className="outline-none p-2 rounded-md border-2 border-gray-300"
+                      type="date"
+                      // @ts-ignore
+                      value={dueDate}
+                      // @ts-ignore
+                      onChange={(e) => setDueDate(e.target.value)}
+                    />
+                  </div>
 
                   <button
                     className="btn btn-primary"
                     onClick={addTask}
-                    disabled={loading}
+                    disabled={loading || !title}
                   >
                     {loading ? "Adding..." : "Add task to my todo list"}
                   </button>
