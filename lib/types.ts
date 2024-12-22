@@ -60,4 +60,11 @@ export type Todo = {
   title: string;
   createdBy: string;
   createdAt: Date;
+  dueDate?: any;
+  completed: boolean;
+  point?: Point;
+  subjectInfo?: {
+    id: string;
+    title: string;
+  };
 };
