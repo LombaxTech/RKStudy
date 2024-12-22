@@ -15,9 +15,17 @@ const links = [
     label: "AI Tutor",
     href: "/ai-tutor",
   },
+  // {
+  //   label: "Feedback",
+  //   href: "/feedback",
+  // },
   {
-    label: "Feedback",
-    href: "/feedback",
+    label: "Subjects",
+    href: "/syllabus",
+  },
+  {
+    label: "Todo List",
+    href: "/todo",
   },
 ];
 
