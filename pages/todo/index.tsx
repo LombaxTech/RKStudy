@@ -39,6 +39,14 @@ export default function TodoHome() {
           });
         });
 
+        // SORT TODOS BY DUE DATE
+        todos.sort((a, b) => {
+          if (!a.dueDate && !b.dueDate) return 0;
+          if (!a.dueDate) return 1;
+          if (!b.dueDate) return -1;
+          return a.dueDate.toDate().getTime() - b.dueDate.toDate().getTime();
+        });
+
         setTodos(todos);
       } catch (error) {
         console.log(error);
