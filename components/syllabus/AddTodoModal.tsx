@@ -16,7 +16,7 @@ export default function AddTodoModal({
 }: {
   addTodoModalIsOpen: any;
   setAddTodoModalIsOpen: any;
-  point: Point;
+  point?: Point;
   spec?: UserSpec;
 }) {
   const plausible = usePlausible();
@@ -29,7 +29,7 @@ export default function AddTodoModal({
 
   const [loading, setLoading] = useState(false);
 
-  const [title, setTitle] = useState(point.title);
+  const [title, setTitle] = useState(point?.title || "");
   const [dueDate, setDueDate] = useState<Date | null>(null);
 
   const [showSuccessNotification, setShowSuccessNotification] = useAtom(
@@ -44,7 +44,7 @@ export default function AddTodoModal({
         createdBy: user.uid as string,
         createdAt: new Date(),
         completed: false,
-        point,
+        ...(point && { point }),
         ...(dueDate && { dueDate: new Date(dueDate) }),
         ...(spec && {
           subjectInfo: {
