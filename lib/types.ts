@@ -32,6 +32,7 @@ export type Syllabus = {
   spec: string;
   topics: Topic[];
   percentageCompleted?: number;
+  link?: string;
 };
 
 export type UserSubject = {
@@ -39,6 +40,7 @@ export type UserSubject = {
   title: string;
   examBoard: string;
   topics: Topic[];
+  link?: string;
 };
 
 export type User = {
