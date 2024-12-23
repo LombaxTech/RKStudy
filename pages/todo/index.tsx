@@ -118,9 +118,15 @@ export default function TodoHome() {
 
       {/* TODOS */}
       <div className="flex flex-col gap-8">
-        {todos.map((todo) => (
-          <ToDoCard key={todo.id} todo={todo} setTodos={setTodos} />
-        ))}
+        {todos.map((todo) => {
+          if (
+            searchTerm &&
+            !todo.title.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+            return null;
+
+          return <ToDoCard key={todo.id} todo={todo} setTodos={setTodos} />;
+        })}
       </div>
     </div>
   );
