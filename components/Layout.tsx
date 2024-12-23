@@ -1,6 +1,6 @@
 import { AuthContext } from "@/context/AuthContext";
 import { db } from "@/firebase";
-import { isOlderThanYesterday, isYesterday } from "@/helperFunctions";
+import { isOlderThanYesterday, isToday, isYesterday } from "@/helperFunctions";
 import { showSuccessNotificationAtom } from "@/lib/atoms/atoms";
 import { doc, updateDoc } from "firebase/firestore";
 import { useAtom } from "jotai";
@@ -71,12 +71,22 @@ const StudyStreak = () => {
   useEffect(() => {
     async function updateStudyStreak() {
       let lastSeen;
-      if (!user.lastSeen) lastSeen = new Date();
 
-      if (user.lastSeen.nanoseconds) {
-        lastSeen = user.lastSeen.toDate();
+      if (!user.lastSeen) {
+        lastSeen = new Date();
       } else {
-        lastSeen = user.lastSeen;
+        if (user.lastSeen.nanoseconds) {
+          lastSeen = user.lastSeen.toDate();
+        } else {
+          lastSeen = user.lastSeen;
+        }
+      }
+
+      if (isToday(lastSeen) && !user.studyStreak) {
+        await updateDoc(doc(db, "users", user.uid), {
+          lastSeen: new Date(),
+          studyStreak: 1,
+        });
       }
 
       if (isYesterday(lastSeen)) {
