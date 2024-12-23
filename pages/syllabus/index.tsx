@@ -97,7 +97,9 @@ const SpecCard = ({
         </div>
 
         <div className="flex items-center gap-6">
-          <Link href={`/syllabus/${spec.spec}/${spec.id}`}>
+          <Link
+            href={spec.link ? spec.link : `/syllabus/${spec.spec}/${spec.id}`}
+          >
             <button className="btn btn-primary btn-sm">View</button>
           </Link>
           <FaTrash
