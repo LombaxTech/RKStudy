@@ -23,6 +23,7 @@ export type UserSpec = {
     [key: string]: string;
   };
   percentageCompleted?: number;
+  link?: string;
 };
 
 export type Syllabus = {
