@@ -13,11 +13,13 @@ export default function AddTodoModal({
   setAddTodoModalIsOpen,
   point,
   spec,
+  setTodos,
 }: {
   addTodoModalIsOpen: any;
   setAddTodoModalIsOpen: any;
   point?: Point;
   spec?: UserSpec;
+  setTodos?: any;
 }) {
   const plausible = usePlausible();
 
@@ -54,9 +56,16 @@ export default function AddTodoModal({
         }),
       };
 
-      await addDoc(collection(db, "todos"), newTodo);
+      let newTodoDoc = await addDoc(collection(db, "todos"), newTodo);
 
       setShowSuccessNotification(true);
+
+      if (setTodos) {
+        setTodos((prevTodos: Todo[]) => [
+          ...prevTodos,
+          { id: newTodoDoc.id, ...newTodo },
+        ]);
+      }
 
       closeModal();
     } catch (error) {
