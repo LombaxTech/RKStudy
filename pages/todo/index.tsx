@@ -7,6 +7,7 @@ import { getDocs } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { BiDotsVertical } from "react-icons/bi";
 import { formatDateForDisplay } from "@/helperFunctions";
+import AddTodoModal from "@/components/syllabus/AddTodoModal";
 
 type CompletionStatus = "completed" | "incomplete";
 
@@ -14,6 +15,8 @@ export default function TodoHome() {
   const { user } = useContext(AuthContext);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(false);
+
+  const [addTodoModalIsOpen, setAddTodoModalIsOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCompletionStatus, setSelectedCompletionStatus] = useState<
@@ -59,14 +62,27 @@ export default function TodoHome() {
 
   if (loading) return <div>Loading...</div>;
 
-  if (todos.length === 0) return <NoTodos />;
+  if (todos.length === 0) return <NoTodos setTodos={setTodos} />;
 
   return (
     <div className="p-4 flex-1 flex flex-col gap-4 md:px-16 md:pt-10">
       {/* <button className="btn btn-primary" onClick={() => console.log(todos)}>
         log todos
       </button> */}
-      <h1 className="text-2xl font-bold">My Todo List</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-bold">My Todo List</h1>
+        <button
+          className="btn btn-primary"
+          onClick={() => setAddTodoModalIsOpen(true)}
+        >
+          Add new todo
+        </button>
+        <AddTodoModal
+          addTodoModalIsOpen={addTodoModalIsOpen}
+          setAddTodoModalIsOpen={setAddTodoModalIsOpen}
+          setTodos={setTodos}
+        />
+      </div>
 
       {/* FILTER */}
       <div className="flex flex-col items-start justify-start gap-2 md:gap-4 md:flex-row md:items-center md:justify-between">
@@ -118,11 +134,11 @@ const ToDoCard = ({ todo, setTodos }: { todo: Todo; setTodos: any }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      {todo.dueDate && (
+      {todo.dueDate && todo.dueDate?.seconds ? (
         <p className="text-sm text-gray-500">
           {formatDateForDisplay(todo.dueDate.toDate())}
         </p>
-      )}
+      ) : null}
       <div className="p-4 bg-white rounded-md shadow-md flex justify-between items-center">
         <h2 className="text-lg font-medium">{todo.title}</h2>
         {/* DROPDOWN ACTIONS */}
@@ -146,15 +162,27 @@ const ToDoCard = ({ todo, setTodos }: { todo: Todo; setTodos: any }) => {
   );
 };
 
-const NoTodos = () => {
+const NoTodos = ({ setTodos }: { setTodos: any }) => {
+  const [addTodoModalIsOpen, setAddTodoModalIsOpen] = useState(false);
+
   return (
-    <div className="flex-1 flex flex-col items-center pt-10">
-      <h1 className="text-2xl font-bold">No todos yet</h1>
-      <img src="/lightbulb.svg" alt="No todos" className="w-[200px]" />
-      {/* TODO: ADD BUTTON TO ADD TODO */}
-      <p className="text-sm text-gray-500">
-        Add todos to your list by clicking the + button on the syllabus page.
-      </p>
-    </div>
+    <>
+      <div className="flex-1 flex flex-col gap-4 items-center pt-10">
+        <h1 className="text-2xl font-bold">No todos yet</h1>
+        <img src="/lightbulb.svg" alt="No todos" className="w-[200px]" />
+        {/* TODO: ADD BUTTON TO ADD TODO */}
+        <button
+          className="btn btn-primary"
+          onClick={() => setAddTodoModalIsOpen(true)}
+        >
+          Add a task to your list
+        </button>
+      </div>
+      <AddTodoModal
+        addTodoModalIsOpen={addTodoModalIsOpen}
+        setAddTodoModalIsOpen={setAddTodoModalIsOpen}
+        setTodos={setTodos}
+      />
+    </>
   );
 };
